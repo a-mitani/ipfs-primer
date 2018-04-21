@@ -1,0 +1,12 @@
+baseURL = "http://example.org/"
+languageCode = "ja"
+title = "IPFS入門"
+theme = "hugo-theme-learn"
+
+[params]
+  # Shows a checkmark for visited pages on the menu
+  showVisitedLinks = false
+  # Disable search function. It will hide search bar
+  disableSearch = true
+  # Set this to true to disable copy-to-clipboard button for inline code.
+  disableInlineCopyToClipBoard = true
