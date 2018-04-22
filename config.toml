@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://ipfs-book.decentralized-web.jp"
 languageCode = "ja"
 title = "IPFS入門"
 theme = "hugo-theme-learn"
@@ -10,3 +10,15 @@ theme = "hugo-theme-learn"
   disableSearch = true
   # Set this to true to disable copy-to-clipboard button for inline code.
   disableInlineCopyToClipBoard = true
+
+[[menu.shortcuts]]
+  name = "<i class='fa fa-github'></i> Github repo"
+  identifier = "ds"
+  url = "https://github.com/a-mitani/ipfs-primer"
+  weight = 10
+
+
+[[menu.shortcuts]]
+  name = "<i class='fa fa-user'></i> Contact"
+  url = "https://github.com/a-mitani"
+  weight = 30
