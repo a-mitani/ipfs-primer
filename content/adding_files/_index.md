@@ -66,7 +66,7 @@ IPFSでは、コンテンツのサイズが256KBを超える場合、256KB以下
 実際に大きなファイルがチャンクに分割されて管理する様子を見ていきます。ここでは猫の画像 cat.jpg [^1] を使います。
 
 ```
-$ wget https://github.com/ipfs-users/mastering-ipfs/raw/master/assets/cat.jpg
+$ wget https://github.com/a-mitani/ipfs-primer/raw/master/static/images/cat.jpg
 $ ll cat.jpg # ファイルサイズ確認 約610KB > 256KB
 -rw-rw-r-- 1 ubuntu ubuntu 624861 Mar 19 11:13 cat.jpg
 $ ipfs add cat.jpg # cat.jpgをリポジトリに登録
