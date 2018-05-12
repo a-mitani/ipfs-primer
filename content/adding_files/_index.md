@@ -1,6 +1,6 @@
 ---
 title: IPFSへのファイルの追加
-weight: 5
+weight: 3
 pre: "<b>3. </b>"
 ---
 
