@@ -6,7 +6,7 @@ pre: "<b>7. </b>"
 本章は参考情報として Juan Benet によって書かれたIPFSの[whitepaper](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)「IPFS-Content Addressed, Versioned, P2P File System (DRAFT 3)」の日本語訳を記します。
 
 {{% notice note %}}
-本翻訳は直訳を避け、原文の内容を損ねない範囲で（大幅に）意訳しています。そのため必要な場合は[原文](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)を参照ください。また、翻訳への協力（翻訳・修正）歓迎です。協力いただける場合は[GitHub](https://github.com/ipfs-users/mastering-ipfs)にてIssueの発行、またはPull requestをお願いいたします。
+本翻訳は直訳を避け、原文の内容を損ねない範囲で（大幅に）意訳しています。そのため必要な場合は[原文](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)を参照ください。また、翻訳への協力（翻訳・修正）歓迎です。協力いただける場合は[GitHub](https://github.com/a-mitani/ipfs-primer)にてIssueの発行、またはPull requestをお願いいたします。
 
 {{% /notice %}}
 
