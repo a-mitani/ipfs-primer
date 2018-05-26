@@ -3,9 +3,12 @@ title: 【参考】whitepaper 日本語訳
 weight: 7
 pre: "<b>7. </b>"
 ---
-本章は参考情報として[Juan Benet](juan@benet.ai)によって書かれたIPFSの[whitepaper](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)「IPFS-Content Addressed, Versioned, P2P File System (DRAFT 3)」の日本語訳を記します。
+本章は参考情報として Juan Benet によって書かれたIPFSの[whitepaper](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)「IPFS-Content Addressed, Versioned, P2P File System (DRAFT 3)」の日本語訳を記します。
 
-※ 翻訳は直訳を避け、原文の内容を損ねない範囲で（大幅に）意訳しています。そのため必要な場合は[原文](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)を参照ください。
+{{% notice note %}}
+本翻訳は直訳を避け、原文の内容を損ねない範囲で（大幅に）意訳しています。そのため必要な場合は[原文](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)を参照ください。また、翻訳への協力（翻訳・修正）歓迎です。協力いただける場合は[GitHub](https://github.com/ipfs-users/mastering-ipfs)にてIssueの発行、またはPull requestをお願いいたします。
+
+{{% /notice %}}
 
 ## 概要
 Inter Planetary File System(IPFS)はピアツーピア（P2P）型の分散型ファイルシステムであり、全てのデバイスを一つのファイルシステムに結合することを目的としたものです。いくつもの点でIPFSはWebと同様のもの言えますが、一方で、一つのGitリポジトリ上でオブジェクト交換を行うBitTorrentのスウォームと考えることもできます。またはコンテンツアドレス型のハイパーリンク機能をもつストレージとも考えられます。IPFSはMerkle-DAGのデータ構造を持ちます。IPFS上にバージョン管理可能なファイルシステムやブロックチェーン、または永続的なWebを構築することが可能になります。IPFSは分散ハッシュテーブル技術、インセンティブが与えられたブロック交換技術、自己証明型名前空間といった要素技術を組み合わせて実現されており、単一障害点がなくピア同士がお互いの信頼を必要とせずに実現できるシステムです。
@@ -47,6 +50,47 @@ S/Kademlia[1]は、悪意の攻撃を防ぐために、以下の２点につい�
 
 1. S/KademliaはPKI鍵ペアを利用したセキュアなノードのID生成スキームを導入することによりシビル攻撃を防ぎます。
 2. S/Kademliaでは連結されていないパスも対象にデータを探索します。これにより多くの悪意あるノードが含まれるネットワークにおいても善意のノード同士が接続可能にします。実際に半数の悪意あるノードが含まれるネットワーク内においても0.85という（訳者注：データ探索の？）成功率を実現しています。
+
+### 2.2 ブロック交換 - BitTorrent
+BitTorrent[3]はファイル共有システムとして大きく成功しているシステムです。信頼性の低いピア（スウォーム）が存在するP2Pネットワークにおいても各ピアが連携してファイルピース（ファイル断片）の共有を行う仕組みを作ることに成功しています。IPFSのデザインに影響を与えたBitTorrentの特徴は以下のものです。
+
+1. BitTorrentでのデータ交換プロトコルは「擬似しっぺ返し戦略」と呼ばれる、より貢献するノードには褒賞を与え、単に他者のリソースを取得するだけのノードには罰則を与える仕組みを採用しています。
+2. BitTorrentではファイル断片の希少性をトラッキングし、最も希少なファイル断片から優先してダウンロードするように設計されています。これによりシーダー（ファイルの完全なデータを持つピア）の負荷を下げ、シーダーでないピアもデータ交換に参加出来るようにしています。
+3. BitTorrent標準のしっぺ返し戦略は、略奪的帯域幅共有戦略（exploitative bandwidth sharing strategies）に対して脆弱性を持ちます。PropShare[8]戦略はこの種の脆弱性を克服し、かつスウォームのパフォーマンスを改善する戦略として知られます。
+
+<!--
+### 2.3 バージョン管理システム - Git
+バージョン管理システムはファイルシステムに対する変更とその時系列を管理し、かつその各バージョンを効率的に配布することを容易にしてくれます。バージョン管理システムとして普及しているGitは、ファイルシステム内の変更履歴をMerkle-DAGのオブジェクトにモデル化することで分散システムに親和性の高いシステムになっています。
+
+1. イミュータブルなオブジェクトとして、ファイル (blob)、ディレクトリ(tree)、そして変更 (commit)が定義されます。
+2. オブジェクトは、そのコンテンツを暗号学的ハッシュ関数によりハッシュ化しそのハッシュ値
+3. Links to other objects are embedded, forming a Merkle
+DAG. This provides many useful integrity and work-
+flow properties.
+4. Most versioning metadata (branches, tags, etc.) are
+simply pointer references, and thus inexpensive to create
+and update.
+5. Version changes only update references or add objects.
+6. Distributing version changes to other users is simply
+transferring objects and updating remote references.
+2.4 Self-Certified Filesystems - SFS
+SFS [12, 11] proposed compelling implementations of both
+(a) distributed trust chains, and (b) egalitarian shared global
+namespaces. SFS introduced a technique for building SelfCertified
+Filesystems: addressing remote filesystems using
+the following scheme
+/sfs/<Location>:<HostID>
+where Location is the server network address, and:
+HostID = hash(public_key || Location)
+Thus the name of an SFS file system certifies its server.
+The user can verify the public key offered by the server,
+negotiate a shared secret, and secure all traffic. All SFS
+instances share a global namespace where name allocation
+is cryptographic, not gated by any centralized body.
+2Merkle Directed Acyclic Graph – similar but more general
+construction than a Merkle Tree. Deduplicated, does not
+need to be balanced, and non-leaf nodes contain data.
+-->
 
 （以降追記予定）
 
