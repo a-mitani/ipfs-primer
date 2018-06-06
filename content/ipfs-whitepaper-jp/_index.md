@@ -58,39 +58,16 @@ BitTorrent[3]はファイル共有システムとして大きく成功してい�
 2. BitTorrentではファイル断片の希少性をトラッキングし、最も希少なファイル断片から優先してダウンロードするように設計されています。これによりシーダー（ファイルの完全なデータを持つピア）の負荷を下げ、シーダーでないピアもデータ交換に参加出来るようにしています。
 3. BitTorrent標準のしっぺ返し戦略は、略奪的帯域幅共有戦略（exploitative bandwidth sharing strategies）に対して脆弱性を持ちます。PropShare[8]戦略はこの種の脆弱性を克服し、かつスウォームのパフォーマンスを改善する戦略として知られます。
 
-<!--
 ### 2.3 バージョン管理システム - Git
-バージョン管理システムはファイルシステムに対する変更とその時系列を管理し、かつその各バージョンを効率的に配布することを容易にしてくれます。バージョン管理システムとして普及しているGitは、ファイルシステム内の変更履歴をMerkle-DAGのオブジェクトにモデル化することで分散システムに親和性の高いシステムになっています。
+バージョン管理システムはファイルシステムに対する変更履歴を管理し、かつその各バージョンを効率的に配布することを容易にしてくれます。バージョン管理システムとして普及しているGitは、ファイルシステム内の変更履歴をMerkle-DAGのオブジェクトにモデル化することで分散システムに親和性の高いシステムになっています。
 
-1. イミュータブルなオブジェクトとして、ファイル (blob)、ディレクトリ(tree)、そして変更 (commit)が定義されます。
-2. オブジェクトは、そのコンテンツを暗号学的ハッシュ関数によりハッシュ化しそのハッシュ値
-3. Links to other objects are embedded, forming a Merkle
-DAG. This provides many useful integrity and work-
-flow properties.
-4. Most versioning metadata (branches, tags, etc.) are
-simply pointer references, and thus inexpensive to create
-and update.
-5. Version changes only update references or add objects.
-6. Distributing version changes to other users is simply
-transferring objects and updating remote references.
-2.4 Self-Certified Filesystems - SFS
-SFS [12, 11] proposed compelling implementations of both
-(a) distributed trust chains, and (b) egalitarian shared global
-namespaces. SFS introduced a technique for building SelfCertified
-Filesystems: addressing remote filesystems using
-the following scheme
-/sfs/<Location>:<HostID>
-where Location is the server network address, and:
-HostID = hash(public_key || Location)
-Thus the name of an SFS file system certifies its server.
-The user can verify the public key offered by the server,
-negotiate a shared secret, and secure all traffic. All SFS
-instances share a global namespace where name allocation
-is cryptographic, not gated by any centralized body.
-2Merkle Directed Acyclic Graph – similar but more general
-construction than a Merkle Tree. Deduplicated, does not
-need to be balanced, and non-leaf nodes contain data.
--->
+1. ファイル (blob)、ディレクトリ (tree)、そして変更 (commit)は、それぞれ不可変（イミュータブル）なオブジェクトとして表現されます。
+2. それらのオブジェクトはコンテンツから生成されたハッシュ値そのものをアドレスとして参照されます（コンテンツアドレス）。
+3. オブジェクト間がリンクにより参照されることで Merkle DAGを構成します。
+4. ブランチやタグ等のバージョン管理用のメタデータは単なるポインターとして管理されるため、それらの生成や更新にはほとんどコストはかかりません。
+5. バージョンの変更はそれらポインターの変更と差分のオブジェクトの追加として管理されます。
+6. バージョン変更の他ユーザーへの配布はオブジェクトの転送とリモート参照の更新です。（＊訳者注：この部分は意味不明です。）
+
 
 （以降追記予定）
 
