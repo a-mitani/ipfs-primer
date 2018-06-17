@@ -93,6 +93,43 @@ IPFSは先述したDHT、BitTorrent、Git、SFSのアイデアを融合して実
 
 注：下記にデータ構造や機能はGo言語の文法に従い記述します。
 
+### 3.1 Identities
+各ノードは`NodeId`によって識別され、これはS/Kademliaで交換される公開鍵を暗号学的ハッシュ関数によりハッシュ化したものとなります[1]。各ノードは自身の公開鍵と（パスワードにより暗号化された）秘密鍵を保持します。ノードの管理者はノードを起動する度に新しいIDを発行することも可能ですが未払いのネットワーク報酬を放棄することとなるため、それが同じIDを使い続けるインセンティブとなります。
+
+```go
+type NodeId Multihash
+type Multihash []byte
+// self-describing cryptographic hash digest
+type PublicKey []byte
+
+type PrivateKey []byte
+// self-describing keys
+type Node struct {
+  NodeId NodeID
+  PubKey PublicKey
+  PriKey PrivateKey
+}
+```
+
+
+```go
+difficulty = <integer parameter>
+n = Node{}
+do {
+  n.PubKey, n.PrivKey = PKI.genKeyPair()
+  n.NodeId = hash(n.PubKey)
+  p = count_preceding_zero_bits(hash(n.NodeId))
+} while (p < difficulty)
+```
+IPFSではS/Kademlia方式を基礎にしたID生成を行います。最初に他ノードと接続する際には公開鍵を公開し`hash(other.PublicKey)`が`other.NodeId`と一致するかを確認します。もし異なる場合は接続を遮断します。
+
+#### *暗号学的関数について*
+IPFSでの暗号学的ハッシュ値は、何らか特定の関数を使用することをに限定せず、自己表示的な値をもつようにしています。つまり下記のようにマルチハッシュのフォーマット、すなわち、値の先頭部分に使用されたハッシュ関数やダイジェストのバイト数を示すヘッダを持つようにしています。
+```
+<function code><digest length><digest bytes>
+```
+これはシステムに対して (a)ユースケース（例えば強固なセキュリティが必要か？それとも速度が重要か？）に合わせてベストな関数を選択する可能にし、(b)暗号の進化に合わせてシステムも進化可能にします。そしてどの関数を利用したものかを自己表示することにより異なる関数の場合でも互換性を確保しています。
+
 （以降追記予定）
 
 
