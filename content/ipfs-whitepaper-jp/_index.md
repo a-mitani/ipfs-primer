@@ -139,14 +139,38 @@ IPFSのノードはインターネットを横断して常に100以上もの他�
 * 整合性: IPFSでは任意でハッシュ関数のチェックサムを利用してメッセージ整合性をチェックすることが可能です。
 * メッセージ認証: IPFSでは任意で送り主の公開鍵とHMACを利用して、メッセージ認証を行うことがß可能です。
 
-#### 3.2.1 ノードのアドレス指定に関して
-IPFSでは任意のネットワークが利用可能であり、必ずしもインターネットプロトコル（IP）にアクセスすることを想定しておらず、また依存していることもありません。そのためIPFSはオーバーレイネットワークとして利用が可能です。IPFSは`multiaddr`にバイト文字列としてアドレスを保持します。`multiaddr`では下記の例のようにプロトコルの種類とそのアドレスが格納され下層のネットワークに伝えられます。
+#### 3.2.1 ノードアドレス指定
+IPFSでは任意のネットワークが利用可能です。それは即ち、必ずしもインターネットプロトコル（IP）にアクセスすることを想定しておらず、また依存していることもありません。そのためIPFSはオーバーレイネットワークとして利用が可能です。IPFSは`multiaddr`にバイト文字列としてアドレスを保持します。`multiaddr`では下記の例のようにプロトコルの種類とそのアドレスが格納され下層のネットワークに伝えられます。
+
 ```
 # an SCTP/IPv4 connection
 /ip4/10.20.30.40/sctp/1234/
 # an SCTP/IPv4 connection proxied over TCP/IPv4
 /ip4/5.6.7.8/tcp/5678/ip4/1.2.3.4/sctp/1234/
 ```
+
+### 3.3 Routing
+IPFSのノードには２つのルーティングが可能である必要があります。つまり(a)他のノードのネットワークアドレスへの経路の探索するルーティング、(b)任意の求めるオブジェクトを探索するルーティング、という２種類のルーティングが可能である必要があります。IPFSではこれらのルーティングをS/KademliaとCoralを基礎としたDSHTを用いることで実現しています。IPFSでは、Coral[5]やMainline[16]と似たオブジェクトのサイズと利用方法を採用しています。つまりIPFSでは保存するオブジェクトのサイズにより保存方法を切り分けます。1KB以下の小さいサイズのオブジェクトの場合そのオブジェクトを直接DHT上に保存し、それを超えるサイズのオブジェクトの場合はそのオブジェクトへの参照（＝保持しているノードのID）をDHT上に保存します。 このDSHTのインターフェースは次のようなものです。
+
+```
+type IPFSRouting interface {
+FindPeer(node NodeId)
+// gets a particular peer’s network address
+SetValue(key []bytes, value []bytes)
+// stores a small metadata value in DHT
+GetValue(key []bytes)
+// retrieves small metadata value from DHT
+ProvideValue(key Multihash)
+// announces this node can serve a large value
+FindValuePeers(key Multihash, min int)
+// gets a number of peers serving a large value
+}
+```
+
+注意: IPFSではユースケースに応じて異なる実装がコールされます。（例えば広域ネットワークではDHTが、ローカルネットワークでは static HTがコールされます。）そのためIPFSでは上記のインターフェースに合致する限りユーザーのニーズに応じてルーティングシステムが切り替えることが可能です。
+
+
+
 
 （以降追記予定）
 
