@@ -22,3 +22,8 @@ theme = "hugo-theme-learn"
   name = "<i class='fa fa-user'></i> Contact"
   url = "https://github.com/a-mitani"
   weight = 30
+
+[[menu.shortcuts]]
+  name = "<i class='fa fa-link' aria-hidden='true'></i> Ethereum入門"
+  url = "https://book.ethereum-jp.net/"
+  weight = 40
