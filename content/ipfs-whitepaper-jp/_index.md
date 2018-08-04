@@ -211,6 +211,69 @@ Figure 1 に示されるようにこの関数はそのノードの負債比率�
 
 負債比率は信用の一つの指標として働きます。つまり多くのデータを交換してきた実績のあるノードに対しては寛容に、一方で未知で信用ができないノードについては厳しい送信確率になるというものです。これにより（a）多くの新しいノードを作るようなシビルアタックを狙う悪意ある攻撃者に対して耐性を持つことを可能にする（b）一時的にブロックを提供できない状態になった場合にも過去に十分交換実績があるノードは保護する（c）修復されないノードに対して最終的に交換を停止するという動作が可能になります。
 
+#### 3.4.3 BitSwap Ledger
+BitSwapのノードは他のノードとのブロック転送収支の台帳を持ちます。BitSwapノード間で接続を開始する際はこの台帳を互いに交換します。この台帳に齟齬がある場合はこの台帳の信用と負債の記録を消し初期化することも可能です。悪意あるノードが負債の歴史を隠すために消すことがありえます。ノードが十分に負債を蓄積することはほぼないでしょう。（訳者注：意味不明）接続先のノードはブロックの取引を中断することが可能です。
+
+```
+type Ledger struct {
+  owner NodeId
+  partner NodeId
+  bytes_sent int
+  bytes_recv int
+  timestamp Timestamp
+}
+```
+
+ノードは台帳の履歴を残すこともできます。ただしブロック取引を行うのには現時点での台帳の値のみが必要で履歴は必須ではありません。ノードは古い台帳（すでに存在しないノードとの取引実績）などを自由に捨てる（Garbage Collect）ことも可能です。
+
+#### 3.4.4 BetSwapの仕様
+BitSwapのノードはシンプルなプロトコルに従います。
+
+```
+// Additional state kept
+type BitSwap struct {
+  ledgers map[NodeId]Ledger
+  // 既知のノードに関する台帳リスト（未接続のノードも含む）
+
+  active map[NodeId]Peer
+  // 現在接続しているノードリスト
+
+  need_list []Multihash
+  // 自分が必要としているブロックのチェックサムのリスト
+
+  have_list []Multihash
+  //　自分が持っているブロックのチェックサムのリスト
+}
+
+type Peer struct {
+  nodeid NodeId
+  ledger Ledger
+  // このピアとの取引台帳
+
+  last_seen Timestamp
+  // 最後にメッセージを受信したタイムスタンプ
+
+  want_list []Multihash
+  // このピア（またはこのピアのピア）が必要としているブロックのチェックサムのリスト
+}
+
+//プロトコルのインターフェース:
+interface Peer {
+  open (nodeid :NodeId, ledger :Ledger);
+  send_want_list (want_list :WantList);
+  send_block (block :Block) -> (complete :Bool);
+  close (final :Bool);
+}
+```
+
+ピアとの接続を行う際の流れは以下のようなものになります。
+
+1. Open: ピアが`ledger`を同意するまで送信。
+2. Sending: ピア同士で`want_list`と`blocks`を交換します。
+3. Close: ピアが接続を閉じます。
+4. Ignored: （特別）ノードがブロック送信をしない場合はそのノードは一定期間無視されます。
+
+
 （以降追記予定）
 
 
