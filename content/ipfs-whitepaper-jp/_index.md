@@ -333,6 +333,29 @@ type IPFSObject struct {
 }
 ```
 
+IPFSのMerkle DAGは非常に柔軟性の高いデータ保存方法です。(a)コンテンツアドレス形式であること、(b)上記のフォーマットに従っている、という２点のみが要求されます。IPFSではデータフィールドのフォーマットは上位のアプリケーションに完全に委ねられ、IPFS自身が理解できないカスタムフォーマットも利用可能です。IPFSオブジェクト内のリンクテーブルは下記の役割を果たします。
+
+- オブジェクトが参照する全てのオブジェクトのリストを保持する。例えば
+```
+> ipfs ls /XLZ1625Jjn7SubMDgEyeaynFuR84ginqvzb
+XLYkgq61DYaQ8NhkcqyU7rLcnSa7dSHQ16x 189458 less
+XLHBNmRQ5sJJrdMPuu48pzeyTtRo39tNDR5 19441 script
+XLF4hwVHsVuZ78FZK6fozf8Jj9WEURMbCX4 5286 template
+<object multihash> <object size> <link name>
+```
+
+- foo/bar/bazといったパスの解決を行う。オブジェクトが与えられた際、IPFSはオブジェクトのリンクを参照し、そのリンク先のオブジェクトのリンクを参照するというように辿りパス文字列をフェッチしていきます。
+
+- 再帰的に参照オブジェクトを解決する。
+```
+> ipfs refs --recursive \
+/XLZ1625Jjn7SubMDgEyeaynFuR84ginqvzb
+XLLxhdgJcXzLbtsLRL1twCHA2NrURp4H38s
+XLYkgq61DYaQ8NhkcqyU7rLcnSa7dSHQ16x
+XLHBNmRQ5sJJrdMPuu48pzeyTtRo39tNDR5
+XLWVQDqxo9Km9zLyquoC9gAP8CL1gWnHZ7z
+...
+```
 
 
 （以降追記予定）
