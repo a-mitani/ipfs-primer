@@ -19,7 +19,7 @@ pre: "<b>5. </b>"
 ### 1. go-ipfsの自動起動設定
 先にインストールしているgo-ipfsをサーバ再起動時などに自動起動する設定を行います。
 ```
-$ sudo sudo vi /lib/systemd/system/ipfs-daemon.service
+$ sudo vi /lib/systemd/system/ipfs-daemon.service
 ```
 で下記の内容が記されたファイルを生成します。ここではコマンド`/usr/local/bin/ipfs daemon`が`ubuntu`ユーザー＆グループで実行されることを指定しています。（その他の設定の詳細については[ここ](http://enakai00.hatenablog.com/entry/20130917/1379374797)が参考になります。）
 ```
