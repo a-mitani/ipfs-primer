@@ -397,15 +397,11 @@ IPFSは多くの既存の素晴らしいアイデアやシステムの複合体�
 
 ## 7. Reference
 
-［1］ I. Baumgart and S. Mies. S/kademlia:
-A practicable approach towards secure key-based routing. In Parallel and Distributed Systems, 2007 International Conference on, volume 2, pages 1–8. IEEE, 2007.
+［1］ I. Baumgart and S. Mies. S/kademlia: A practicable approach towards secure key-based routing. In Parallel and Distributed Systems, 2007 International Conference on, volume 2, pages 1–8. IEEE, 2007.
 
-[2] I. BitTorrent. Bittorrent and A¸ttorrent software ˆ
-surpass 150 million user milestone, Jan. 2012.
+[2] I. BitTorrent. Bittorrent and A¸ttorrent software surpass 150 million user milestone, Jan. 2012.
 
-[3] B. Cohen. Incentives build robustness in bittorrent. In
-Workshop on Economics of Peer-to-Peer systems,
-volume 6, pages 68–72, 2003.
+[3] B. Cohen. Incentives build robustness in bittorrent. In Workshop on Economics of Peer-to-Peer systems, volume 6, pages 68–72, 2003.
 
 [4] J. Dean and S. Ghemawat. leveldb–a fast and
 lightweight key/value database library by google, 2011.
