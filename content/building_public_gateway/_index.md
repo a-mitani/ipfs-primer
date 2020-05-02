@@ -69,25 +69,30 @@ server {
 # httpsへのアクセスを受けた場合の設定
 server {
   listen 443 ssl default_server;
- 	index index.html index.htm index.nginx-debian.html;
+        index index.html index.htm index.nginx-debian.html;
 
   # SSL証明書関連の設定。
   # 証明書はLet's encrypt（https://letsencrypt.org/）を利用して用意。
   # 設定内のドメインは各環境に合わせること。
-	server_name pfs-gateway.decentralized-web.jp;
-	ssl_certificate	/etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/cert.pem;
-	ssl_certificate_key /etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/privkey.pem;
+        server_name pfs-gateway.decentralized-web.jp;
+        ssl_certificate /etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/cert.pem;
+        ssl_certificate_key /etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/privkey.pem;
 
   # バックエンドのgo-ipfsとの連携設定。
-  # ドメイン以下のアクセス全て（/）をgo-ipfsへ。
-	location / {
-	proxy_pass http://127.0.0.1:8080;
+  # ドメイン以下のアクセス全て（/）を/var/www/html以下のindex.htmlへ。
+        location / {
+        root /var/www/html;
+        }
+
+  # ドメイン以下/ipfs/か/ipns/の場合はgo-ipfsへ。
+        location ~*/ip[fn]s/.+ {
+        proxy_pass http://127.0.0.1:8080;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
-	}
+        }
 }
 ```
 上記nginxの設定ファイル内のコメントにも書いたようにHTTPS通信する際の証明書は[Let's encrypt](https://letsencrypt.org/)を利用して証明書を発行しています。証明書発行は自動で行われ容易にかつ手早く発行が可能です。Let's encryptについては[ここ](https://knowledge.sakura.ad.jp/5573/)で詳しく解説してくれているので参考にしてください[^4]。
