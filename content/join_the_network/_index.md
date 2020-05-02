@@ -18,18 +18,22 @@ pre: "<b>4. </b>"
 ```
 $ ipfs daemon   #go-ipfsをデーモンとして起動
 Initializing daemon...
-Adjusting current ulimit to 2048...
-Successfully raised file descriptor limit to 2048.
+go-ipfs version: 0.5.0
+Repo version: 9
+System version: amd64/linux
+Golang version: go1.13.10
 Swarm listening on /ip4/127.0.0.1/tcp/4001
-Swarm listening on /ip4/160.16.212.47/tcp/4001
-Swarm listening on /p2p-circuit/ipfs/QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ1h8Vpk8zu7s
+Swarm listening on /ip4/160.16.52.199/tcp/4001
+Swarm listening on /p2p-circuit
 Swarm announcing /ip4/127.0.0.1/tcp/4001
-Swarm announcing /ip4/160.16.212.47/tcp/4001
-Swarm announcing /ip4/160.16.212.47/tcp/4001
+Swarm announcing /ip4/160.16.52.199/tcp/4001
 API server listening on /ip4/127.0.0.1/tcp/5001
+WebUI: http://127.0.0.1:5001/webui
 Gateway (readonly) server listening on /ip4/127.0.0.1/tcp/8080
-Daemon is ready
 ```
+{{% notice note %}}
+IPFSノードは他のピアと通信するためにデフォルトではTCPポート4001を利用しています。そのためFirewallなどでポートを閉じている場合は4001を開放してからデーモンを起動してください。
+{{% /notice %}}
 
 この状態でもう１つ別のターミナルウィンドウを開き、自身のノードの接続状態を見てみましょう。現在自身のノードが接続している他のピアは`ipfs swarm peers`コマンドで確認できます。
 ```
@@ -60,13 +64,13 @@ QmQ9N2TJCjdX69Z6eRyxkjichXsxHk6zTubHumpSkxPBwR
 
 誰かが`ipfs cat QmT78zSu...`で"hello world"を取得しようとした場合には、IPFSネットワーク全体に「誰か`QmT78zSu...`のコンテンツを持っていないか？」という問い合わせを投げ、その結果返事が帰ってきた上記のような`QmT78zSu...`を保持するピアのうちもっとも自身に近いピアからコンテンツをダウンロードします。またコンテンツを取得したピアは取得元と同様に他のピアとそのコンテンツを共有することになります。このファイル共有の仕組みにより情報が永続的に保持され続けることになります。この動作はまるで「バカの壁」の書籍を読みたいと思った時に「誰か持っていない？」と周りに問い合わせて、偶然持っていた近くの友人から借りるといった動作と似ていることに気づくと思います。これがコンテンツ指向での情報のやり取りの流れになります。
 
-この動作を少し違った角度で見るために、まだ他のピアには登録されていない（であろう）コンテンツでIPFSの動作を見て見ましょう。他のピアには登録されていないようなコンテンツとして`ifconfig`コマンドの結果をハッシュ化した情報をIPFSネットワーク内で共有してみます[^3]。適当なワーキングディレクトリ以下で
+この動作を少し違った角度で見るために、まだ他のピアには登録されていない（であろう）コンテンツでIPFSの動作を見て見ましょう。他のピアには登録されていないようなコンテンツの例として、ここでは`ip addr`コマンドの結果をハッシュ化した情報をIPFSネットワーク内で共有してみます[^3]。適当なワーキングディレクトリ以下で
 ```
-$ ifconfig |sha256sum > ifconfig_hash.txt
-$ cat ifconfig_hash.txt
+$ ip addr |sha256sum > ip_hash.txt
+$ cat ip_hash.txt
 01a0e60650c96bca05be0ed61c2ed0e79773f924eba38893d7c5527e0771b6ea  -
-$ ipfs add ifconfig_hash.txt
-added QmX5HrsXKMwBPG6gcHyXnZ9TvjpUTxSAGJPczQQWptqbo1 ifconfig_hash.txt
+$ ipfs add ip_hash.txt
+added QmX5HrsXKMwBPG6gcHyXnZ9TvjpUTxSAGJPczQQWptqbo1 ip_hash.txt
 ```
 を実行しIPFSネットワークに登録します。
 ```

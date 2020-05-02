@@ -1,7 +1,7 @@
 ---
 title: 【参考】whitepaper 日本語訳
-weight: 7
-pre: "<b>7. </b>"
+weight: 8
+pre: "<b>8. </b>"
 ---
 本章は参考情報として Juan Benet によって書かれたIPFSの[whitepaper](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)「IPFS-Content Addressed, Versioned, P2P File System (DRAFT 3)」の日本語訳を記します。
 

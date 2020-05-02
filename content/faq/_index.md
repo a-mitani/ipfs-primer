@@ -1,7 +1,7 @@
 ---
 title: FAQ
-weight: 6
-pre: "<b>6. </b>"
+weight: 7
+pre: "<b>7. </b>"
 ---
 
 ### Q: IPFSリポジトリを再度初期化するには？

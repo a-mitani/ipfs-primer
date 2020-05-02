@@ -11,8 +11,8 @@ pre: "<b>2. </b>"
 go-ipfsのインストールは非常に容易です。ここでは、`Ubuntu 18.04 LTS`環境での例を示しますが他OSでも同様です。基本的には[go-ipfsのダウンロードサイト](https://dist.ipfs.io/#go-ipfs)よりビルド済みバイナリパッケージをダウンロードして解凍したのち、実行モジュールをPATHが通っているディレクトリに配置するスクリプトを動かすだけです。下記にコマンド例を示します。
 
 ```
-$ wget https://dist.ipfs.io/go-ipfs/v0.4.23/go-ipfs_v0.4.23_linux-amd64.tar.gz    #URLは、環境やバージョンにより適宜変更してください。
-$ tar xvzf go-ipfs_v0.4.13_linux-amd64.tar.gz
+$ wget https://dist.ipfs.io/go-ipfs/v0.5.0/go-ipfs_v0.5.0_linux-amd64.tar.gz    #URLは、環境やバージョンにより適宜変更してください。
+$ tar xvzf go-ipfs_v0.5.0_linux-amd64.tar.gz
 $ cd go-ipfs/
 $ sudo ./install.sh
 ```
@@ -21,7 +21,7 @@ $ sudo ./install.sh
 
 ```
 $ ipfs version
-ipfs version 0.4.23
+ipfs version 0.5.0
 ```
 
 ##### ■Tips:  go-ipfsのアップデート
@@ -41,7 +41,7 @@ generating 2048-bit RSA keypair...done
 peer identity: QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ1h8Vpk8zu7s
 to get started, enter:
 
-    ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
+    ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
 ```
 
 実行結果に示されるようにユーザーのhomeディレクトリ直下に`.ipfs`ディレクトリが生成される。このディレクトリがIPFSのリポジトリとなります。
@@ -49,7 +49,7 @@ to get started, enter:
 実行結果の最後に示された`ipfs cat ...`のコマンドをコンソール上で実行してみましょう。詳細は後述しますがipfs catはIPFSネットワーク上に保存されているファイルの内容を取得するコマンドで、ここではreadmeファイルの内容を取得しています。
 
 ```
-$ ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
+$ ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
 Hello and Welcome to IPFS!
 
 ██╗██████╗ ███████╗███████╗
@@ -78,4 +78,4 @@ Check out some of the other files in this directory:
   ./security-notes
 ```
 
-先の章で紹介したとおり、IPFSはコンテンツアドレス型の仕組みを取り入れており、通常のファイルシステムとはファイルの取扱い方法が大きく異なっています。次節より実際にgo-ipfsを操作しIPFS上でファイルがどのように扱われるのかを見ていきます。
+先の章で紹介したとおり、IPFSはコンテンツアドレス型の仕組みを取り入れており、通常のファイルシステムとはファイルの取扱い方法が大きく異なっています。次節より実際にgo-ipfsを操作しIPFS上でファイルがどのように扱われるのかを見ていきましょう。
