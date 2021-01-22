@@ -66,11 +66,13 @@ HTTPの世界でビジネスを行う事業者自身が自身のビジネスの�
 そこで生み出されたのが[Filecoin](https://filecoin.io/)です。Filecoinは一種の仮想通貨です。FilecoinはProof-of-Spacetimeという仕組みによりIPFS上にストレージを提供した時間や量に応じて仮想通貨Filecoinが与えられることでIPFS参加ノードがコンテンツを保持するインセンティブが加わることになるのです。
 
 ### 普及が始まったIPFS
-このように従来のHTTPプロトコルにはないメリットを有したIPFSは、まだ実験段階にも関わらず実際のサービスでの利用が始まっています。
+このように従来のHTTPプロトコルにはないメリットを有したIPFSは、以下のように実際のサービスでの利用が続々と始まっています。
 
-個人用のホームページのホスティングの草分けであるNeoCitiesはそのホスティングにIPFSを利用することを[発表しました](https://neocities.org/permanent-web)。またブロックチェーンプロトコルの１つであるEthereumも、そのメインサイト[ethereum.org](https://ethereum.org/)をIPFSでホスティングすることを創始者のVitalikが[発表しました](https://twitter.com/VitalikButerin/status/1244940021272064000)。
+* 個人用のホームページのホスティングの草分けであるNeoCitiesがそのホスティングにIPFSを採用（[公式ブログ](https://blog.neocities.org/blog/2015/09/08/its-time-for-the-distributed-web.html)）。
+* ブロックチェーンプロトコルEthereumがそのメインサイト[ethereum.org](https://ethereum.org/)をIPFSでホスティングすることを創始者のVitalikが[発表](https://twitter.com/VitalikButerin/status/1244940021272064000)。
+* Webブラウザ「Brave」がIPFSをサポート。”ipfs://” で始まるURIを指定することでIPFSコンテンツにアクセスが可能に（[公式アナウンス](https://brave.com/ipfs-support/)）。
 
-また、Filecoinについても着実に開発が進められ2019年12月に検証用ネットワーク(Testnet）が[稼働し始めました](https://filecoin.io/blog/filecoin-testnet-is-live/)。
+また、Filecoinについても着実に開発が進められ2020年10月に本番ネットワーク(Mainnet）が[稼働し始めました](https://filecoin.io/blog/mainnet-liftoff/)。
 
 またP2Pの分散型ファイルシステムという特徴から、IPFSはEthereumなどのブロックチェーン技術との相性がよく、それらを組み合わせて構築される様々なサービスが[開発され始めています](https://github.com/ipfs/awesome-ipfs)。
 
