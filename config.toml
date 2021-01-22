@@ -3,6 +3,7 @@ languageCode = "ja"
 title = "IPFS入門"
 theme = "hugo-theme-learn"
 publishDir = "docs"
+canonifyurls = true
 
 [params]
   # Shows a checkmark for visited pages on the menu
