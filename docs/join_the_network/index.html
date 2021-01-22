@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>コンテンツ共有 :: IPFS入門</title>
+
+    
+    <link href="/css/nucleus.css?1611357756" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1611357756" rel="stylesheet">
+    <link href="/css/atelier-plateau-light.css?1611357756" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1611357756" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1611357756" rel="stylesheet">
+    <link href="/css/auto-complete.css?1611357756" rel="stylesheet">
+    <link href="/css/theme.css?1611357756" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1611357756" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1611357756"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/join_the_network/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <h4><a href="https://ipfs-book.decentralized-web.jp/">IPFS入門</a></h4>
+
+    </div>
+    
+  </div>
+  
+    <section id="homelinks">
+      <ul>
+        <li>
+            <a class="padding" href='/'><i class='fas fa-home'></i> Home</a>
+        </li>
+      </ul>
+    </section>
+  
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/what_is_ipfs/" title="IPFSとは何か？" class="dd-item
+        
+        
+        
+        ">
+      <a href="/what_is_ipfs/">
+          <b>1. </b>IPFSとは何か？
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/install_ipfs/" title="IPFSのインストール" class="dd-item
+        
+        
+        
+        ">
+      <a href="/install_ipfs/">
+          <b>2. </b>IPFSのインストール
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/adding_files/" title="IPFSへのファイルの追加" class="dd-item
+        
+        
+        
+        ">
+      <a href="/adding_files/">
+          <b>3. </b>IPFSへのファイルの追加
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/join_the_network/" title="コンテンツ共有" class="dd-item
+        parent
+        active
+        
+        ">
+      <a href="/join_the_network/">
+          <b>4. </b>コンテンツ共有
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/naming_contents/" title="IPNSとDNSLink" class="dd-item
+        
+        
+        
+        ">
+      <a href="/naming_contents/">
+          <b>5. </b>IPNSとDNSLink
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/building_public_gateway/" title="パブリックゲートウェイの構築" class="dd-item
+        
+        
+        
+        ">
+      <a href="/building_public_gateway/">
+          <b>6. </b>パブリックゲートウェイの構築
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/faq/" title="FAQ" class="dd-item
+        
+        
+        
+        ">
+      <a href="/faq/">
+          <b>7. </b>FAQ
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/ipfs-whitepaper-jp/" title="【参考】whitepaper 日本語訳" class="dd-item
+        
+        
+        
+        ">
+      <a href="/ipfs-whitepaper-jp/">
+          <b>8. </b>【参考】whitepaper 日本語訳
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+        
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani/ipfs-primer"><i class='fa fa-github'></i> Github repo</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani"><i class='fa fa-user'></i> Contact</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://book.ethereum-jp.net/"><i class='fa fa-link' aria-hidden='true'></i> Ethereum入門</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/'>IPFS入門</a> > コンテンツ共有
+          
+        
+          
+        
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#ipfsネットワークへ接続する">IPFSネットワークへ接続する</a></li>
+        <li><a href="#コンテンツ共有の動作を見る">コンテンツ共有の動作を見る</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>コンテンツ共有</h1>
+          
+
+        
+
+
+
+	<p>前節では単一のノード内で、IPFSの特徴であるコンテンツ指向のプロトコルにおいて種々のファイル（コンテンツ）がどのように扱われるかを見てきました。本節では自身のノードをIPFSネットワークに参加させることで、IPFSがP2Pのネットワークの中で様々なコンテンツがどのように共有されていくのかを見ていきます。</p>
+
+<div class="notices warning" ><p>自身のIPFSノードを接続することで、ノードのリポジトリに登録されたコンテンツはネットワーク上に公開されることになります。そのため公開したくない秘密のコンテンツは接続前に<a href="/faq/#q-ipfs%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%82%92%E5%86%8D%E5%BA%A6%E5%88%9D%E6%9C%9F%E5%8C%96%E3%81%99%E3%82%8B%E3%81%AB%E3%81%AF">リポジトリを再初期化する</a>などして削除するようにしてください。</p>
+</div>
+
+<h3 id="ipfsネットワークへ接続する">IPFSネットワークへ接続する</h3>
+<p>自身のノードをIPFSのP2Pネットワークに追加するには<code>go-ipfs</code>をデーモンとして起動します。これにより<code>go-ipfs</code>は自動でネットワークに接続された他のノード（ピア）を探索し接続する動作が行われます。（もちろん自身のノードがインターネットに接続されている必要があることに注意してください。）</p>
+<pre><code>$ ipfs daemon   #go-ipfsをデーモンとして起動
+Initializing daemon...
+go-ipfs version: 0.5.0
+Repo version: 9
+System version: amd64/linux
+Golang version: go1.13.10
+Swarm listening on /ip4/127.0.0.1/tcp/4001
+Swarm listening on /ip4/160.16.52.199/tcp/4001
+Swarm listening on /p2p-circuit
+Swarm announcing /ip4/127.0.0.1/tcp/4001
+Swarm announcing /ip4/160.16.52.199/tcp/4001
+API server listening on /ip4/127.0.0.1/tcp/5001
+WebUI: http://127.0.0.1:5001/webui
+Gateway (readonly) server listening on /ip4/127.0.0.1/tcp/8080
+</code></pre>
+<div class="notices note" ><p>IPFSノードは他のピアと通信するためにデフォルトではTCPポート4001を利用しています。そのためFirewallなどでポートを閉じている場合は4001を開放してからデーモンを起動してください。</p>
+</div>
+
+<p>この状態でもう１つ別のターミナルウィンドウを開き、自身のノードの接続状態を見てみましょう。現在自身のノードが接続している他のピアは<code>ipfs swarm peers</code>コマンドで確認できます。</p>
+<pre><code>ipfs swarm peers |head
+/ip4/104.236.179.241/tcp/4001/ipfs/QmSoLPppuBtQSGwKDZT2M73ULpjvfd3aZ6ha4oFGL1KrGM
+/ip4/128.199.219.111/tcp/4001/ipfs/QmSoLSafTMBsPKadTEgaXctDQVcqN88CNLHXMkTNwMKPnu
+/ip4/178.62.158.247/tcp/4001/ipfs/QmSoLer265NRgSp2LA3dPaeykiS1J6DifTC88f5uVQKNAd
+（中略）
+/ip4/98.109.32.211/tcp/4001/ipfs/QmdcDLV5czbEBB1RoYvMxsYUt8KRp5g8GWKsg86cHb2ByD
+/ip4/98.114.215.177/tcp/36383/ipfs/QmWABRCqWoYCGyGV2PZ2T3D9upV39yMgkmFCprXVsKvAZr
+/ip4/98.217.220.122/tcp/16006/ipfs/QmVdY2H8ZyWKae7X4HoCkmLeGCw6P9ucqSPSAS9KfeohFf
+/ip4/99.53.221.81/tcp/4001/ipfs/QmcRw8uibrQmRsbeaCRmFRkxTZG91Jy2WN8kuythaZiopz
+</code></pre><p>出力されている各行が自身のノードと接続しているピアの情報を示しています。非常に多くのピアと接続されているのがみて取れます。筆者の環境では約700のピアと接続されていました。他ピアとの接続数の下限および上限はそれぞれ、IPFSの設定ファイル<code>config</code>内<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>の<code>Swarm.ConnMgr</code>セクションの<code>LowWater</code>と<code>HighWater</code>で設定されており、この部分を編集することで変更が可能です。より多くのピアとの接続することでP2Pネットワークの中でアクセスしたいコンテンツが早く見つけることができるため、システムのリソースが許容できる範囲で接続数は多くしておくことが推奨されます。</p>
+<h3 id="コンテンツ共有の動作を見る">コンテンツ共有の動作を見る</h3>
+<p>ここまでで自身のノードがIPFSのネットワークに接続されました。これにより自身のノードのリポジトリに登録されているコンテンツもネットワーク上で共有されることになります。実際に前節で登録した&quot;hello world&rdquo;（ハッシュ値<code>QmT78zSu...</code>）のコンテンツの共有状態を見てみましょう。<code>ipfs dht findprovs</code>コマンドで当該ハッシュ値を指定することで、IPFSネットワーク上でこのコンテンツを保持しているピアの情報が取得できます。</p>
+<pre><code>$ ipfs dht findprovs QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o
+QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ122Vpk8zu7s
+QmNybVkF2E6j1spYuMDxxpLEUeARB3Fya1w1PLwbLsUBKi
+QmNkPXCDWZ21tzLhtRqSA2pyAs3CdHkU2txT2JP3f7UrD3
+（中略）
+QmQSsV89WQDv4mQWGUeosYRddDSmGjhpLXPWmJcmGUegKJ
+QmQ9N2TJCjdX69Z6eRyxkjichXsxHk6zTubHumpSkxPBwR
+</code></pre><p>ここでハッシュ値<code>QmT78zSu...</code>のコンテンツ（すなわち”hello world”）は既に多数のピアが保持しているのが分かります<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>。これは世界中の多くのIPFSユーザーが最初に&quot;hello world&quot;を自身のノードのリポジトリに登録するためと考えられます。IPFSはコンテンツ指向のプロトコルのために、誰がどのようなタイミングでどのピアのリポジトリに登録したかは関係なく同じコンテンツであれば同一のものと扱います。</p>
+<p>誰かが<code>ipfs cat QmT78zSu...</code>で&quot;hello world&quot;を取得しようとした場合には、IPFSネットワーク全体に「誰か<code>QmT78zSu...</code>のコンテンツを持っていないか？」という問い合わせを投げ、その結果返事が帰ってきた上記のような<code>QmT78zSu...</code>を保持するピアのうちもっとも自身に近いピアからコンテンツをダウンロードします。またコンテンツを取得したピアは取得元と同様に他のピアとそのコンテンツを共有することになります。このファイル共有の仕組みにより情報が永続的に保持され続けることになります。この動作はまるで「バカの壁」の書籍を読みたいと思った時に「誰か持っていない？」と周りに問い合わせて、偶然持っていた近くの友人から借りるといった動作と似ていることに気づくと思います。これがコンテンツ指向での情報のやり取りの流れになります。</p>
+<p>この動作を少し違った角度で見るために、まだ他のピアには登録されていない（であろう）コンテンツでIPFSの動作を見て見ましょう。他のピアには登録されていないようなコンテンツの例として、ここでは<code>ip addr</code>コマンドの結果をハッシュ化した情報をIPFSネットワーク内で共有してみます<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>。適当なワーキングディレクトリ以下で</p>
+<pre><code>$ ip addr |sha256sum &gt; ip_hash.txt
+$ cat ip_hash.txt
+01a0e60650c96bca05be0ed61c2ed0e79773f924eba38893d7c5527e0771b6ea  -
+$ ipfs add ip_hash.txt
+added QmX5HrsXKMwBPG6gcHyXnZ9TvjpUTxSAGJPczQQWptqbo1 ip_hash.txt
+</code></pre><p>を実行しIPFSネットワークに登録します。</p>
+<pre><code>$ ipfs dht findprovs QmX5HrsXKMwBPG6gcHyXnZ9TvjpUTxSAGJPczQQWptqbo1
+QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ1h8Vpk8zu7s
+</code></pre><p>今回のコンテンツは世界に一つしかないコンテンツのため、このコンテンツを保持しているピアは自分自身だけです。さて、この状態でパブリックゲートウェイを経由してブラウザからこのコンテンツを取得してみましょう。chromeなどのアドレスバーに</p>
+<pre><code>https://ipfs-gateway.decentralized-web.jp/ipfs/QmX5HrsXKMwBPG6gcHyXnZ9TvjpUTxSAGJPczQQWptqbo1
+</code></pre><p>を入力してアクセスします。ここでURL末尾の<code>QmX5HrsX...</code>は自身の環境でのハッシュ値に置き換えてください。ブラウザ上でコンテンツが表示されるはずです。その後もう一度このコンテンツを保持しているピアを表示させるコマンドを実行すると</p>
+<pre><code>$ ipfs dht findprovs QmX5HrsXKMwBPG6gcHyXnZ9TvjpUTxSAGJPczQQWptqbo1
+QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ1h8Vpk8zu7s
+QmVU5iBx5a8tKJimkPzn3mzeGfEW8LjwgZV1xV4yu4bjaD
+</code></pre><p>のようにパブリックゲートウェイのピア<code>QmVU5iBx...</code>にもコンテンツが保持されているのがみて取れます。これはブラウザからコンテンツ取得を依頼されたパブリックゲートウェイのピアからIPFSネットワークにコンテンツの保持者を問い合わせ、保持している<code>ipfs add</code>をしたピアからコンテンツを取得しブラウザに返却。コンテンツをパブリックゲートウェイのピアに保持し続けている状態になります。</p>
+
+<div class="notices note" ><p>ここで<a href="https://ipfs-gateway.decentralized-web.jp/">https://ipfs-gateway.decentralized-web.jp/</a>は筆者が開設しているパブリックゲートウェイです。Protocol Labsの開設している本家のパブリックゲートウェイ（ <a href="https://ipfs.io/ipfs">https://ipfs.io/ipfs</a> ）は、保持期間を極端に短くしている（またはコンテンツの保持をしないようしている？）ため、上記のようなIPFSの仕様通りの標準的な動作をしません。そのためここでは筆者が開設しているパブリックゲートウェイを指定して標準的な動作を見るようにしています。</p>
+</div>
+
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>通常は<code>$HOME/.ipfs/config</code>。ここで<code>$HOME</code>は（IPFSを起動した）ユーザーのホームディレクトリ。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>実際はより多いピアでコンテンツが共有されていますがコマンドの仕様上20件に限定されて表示されています。 <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p><code>ifconfig</code>コマンドはIPアドレスなどのネットワーク情報の他にネットワークインターフェースの累積トラフィック量などが出力されるため、同じサーバ内でも出力の内容が変わり世界で唯一のコンテンツを作成するのに便利です。 <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/adding_files/" title="IPFSへのファイルの追加"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/naming_contents/" title="IPNSとDNSLink" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1611357756"></script>
+    <script src="/js/jquery.sticky.js?1611357756"></script>
+    <script src="/js/featherlight.min.js?1611357756"></script>
+    <script src="/js/highlight.pack.js?1611357756"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1611357756"></script>
+    <script src="/js/learn.js?1611357756"></script>
+    <script src="/js/hugo-learn.js?1611357756"></script>
+    
+        
+            <script src="/mermaid/mermaid.js?1611357756"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  </body>
+</html>

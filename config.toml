@@ -2,6 +2,7 @@ baseURL = "https://ipfs-book.decentralized-web.jp"
 languageCode = "ja"
 title = "IPFS入門"
 theme = "hugo-theme-learn"
+publishDir = "docs"
 
 [params]
   # Shows a checkmark for visited pages on the menu
@@ -27,3 +28,4 @@ theme = "hugo-theme-learn"
   name = "<i class='fa fa-link' aria-hidden='true'></i> Ethereum入門"
   url = "https://book.ethereum-jp.net/"
   weight = 40
+

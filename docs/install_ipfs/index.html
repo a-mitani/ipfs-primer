@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>IPFSのインストール :: IPFS入門</title>
+
+    
+    <link href="/css/nucleus.css?1611357756" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1611357756" rel="stylesheet">
+    <link href="/css/atelier-plateau-light.css?1611357756" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1611357756" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1611357756" rel="stylesheet">
+    <link href="/css/auto-complete.css?1611357756" rel="stylesheet">
+    <link href="/css/theme.css?1611357756" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1611357756" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1611357756"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/install_ipfs/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <h4><a href="https://ipfs-book.decentralized-web.jp/">IPFS入門</a></h4>
+
+    </div>
+    
+  </div>
+  
+    <section id="homelinks">
+      <ul>
+        <li>
+            <a class="padding" href='/'><i class='fas fa-home'></i> Home</a>
+        </li>
+      </ul>
+    </section>
+  
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/what_is_ipfs/" title="IPFSとは何か？" class="dd-item
+        
+        
+        
+        ">
+      <a href="/what_is_ipfs/">
+          <b>1. </b>IPFSとは何か？
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/install_ipfs/" title="IPFSのインストール" class="dd-item
+        parent
+        active
+        
+        ">
+      <a href="/install_ipfs/">
+          <b>2. </b>IPFSのインストール
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/adding_files/" title="IPFSへのファイルの追加" class="dd-item
+        
+        
+        
+        ">
+      <a href="/adding_files/">
+          <b>3. </b>IPFSへのファイルの追加
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/join_the_network/" title="コンテンツ共有" class="dd-item
+        
+        
+        
+        ">
+      <a href="/join_the_network/">
+          <b>4. </b>コンテンツ共有
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/naming_contents/" title="IPNSとDNSLink" class="dd-item
+        
+        
+        
+        ">
+      <a href="/naming_contents/">
+          <b>5. </b>IPNSとDNSLink
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/building_public_gateway/" title="パブリックゲートウェイの構築" class="dd-item
+        
+        
+        
+        ">
+      <a href="/building_public_gateway/">
+          <b>6. </b>パブリックゲートウェイの構築
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/faq/" title="FAQ" class="dd-item
+        
+        
+        
+        ">
+      <a href="/faq/">
+          <b>7. </b>FAQ
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/ipfs-whitepaper-jp/" title="【参考】whitepaper 日本語訳" class="dd-item
+        
+        
+        
+        ">
+      <a href="/ipfs-whitepaper-jp/">
+          <b>8. </b>【参考】whitepaper 日本語訳
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+        
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani/ipfs-primer"><i class='fa fa-github'></i> Github repo</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani"><i class='fa fa-user'></i> Contact</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://book.ethereum-jp.net/"><i class='fa fa-link' aria-hidden='true'></i> Ethereum入門</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/'>IPFS入門</a> > IPFSのインストール
+          
+        
+          
+        
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#go-ipfsのインストール">go-ipfsのインストール</a></li>
+        <li><a href="#ipfsリポジトリの初期化">IPFSリポジトリの初期化</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>IPFSのインストール</h1>
+          
+
+        
+
+
+
+	<p>先の章でIPFSはP2P型のファイルシステムであることを説明しました。IPFSを利用するためにIPFSクライアントをインストールする必要があります。ここではGo言語で実装されたクライアントであるgo-ipfsを利用します。</p>
+<h3 id="go-ipfsのインストール">go-ipfsのインストール</h3>
+<p>go-ipfsのインストールは非常に容易です。ここでは、<code>Ubuntu 18.04 LTS</code>環境での例を示しますが他OSでも同様です。基本的には<a href="https://dist.ipfs.io/#go-ipfs">go-ipfsのダウンロードサイト</a>よりビルド済みバイナリパッケージをダウンロードして解凍したのち、実行モジュールをPATHが通っているディレクトリに配置するスクリプトを動かすだけです。下記にコマンド例を示します。</p>
+<pre><code>$ wget https://dist.ipfs.io/go-ipfs/v0.5.0/go-ipfs_v0.5.0_linux-amd64.tar.gz    #URLは、環境やバージョンにより適宜変更してください。
+$ tar xvzf go-ipfs_v0.5.0_linux-amd64.tar.gz
+$ cd go-ipfs/
+$ sudo ./install.sh
+</code></pre><p>ここで、下記のように<code>ipfs version</code>のコマンドを実行しバージョン情報が表示されれば問題なくインストールされています。</p>
+<pre><code>$ ipfs version
+ipfs version 0.5.0
+</code></pre><h5 id="tips--go-ipfsのアップデート">■Tips:  go-ipfsのアップデート</h5>
+<p>新しいバージョンのgo-ipfsにアップデートをする場合も、上記のインストール手順を新しいバージョンのモジュールで行うことでアップデート可能です。ただし、go-ipfsをデーモンとして起動（後述）している場合はそれを停止してから行ってください。</p>
+<p>​</p>
+<h3 id="ipfsリポジトリの初期化">IPFSリポジトリの初期化</h3>
+<p>go-ipfsのインストールを終えたら、IPFSのP2Pネットワークに参加するために下記のコマンドを実行してローカルのIPFSリポジトリを初期化します。</p>
+<pre><code>$ ipfs init
+initializing IPFS node at /home/ubuntu/.ipfs
+generating 2048-bit RSA keypair...done
+peer identity: QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ1h8Vpk8zu7s
+to get started, enter:
+
+    ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
+</code></pre><p>実行結果に示されるようにユーザーのhomeディレクトリ直下に<code>.ipfs</code>ディレクトリが生成される。このディレクトリがIPFSのリポジトリとなります。</p>
+<p>実行結果の最後に示された<code>ipfs cat ...</code>のコマンドをコンソール上で実行してみましょう。詳細は後述しますがipfs catはIPFSネットワーク上に保存されているファイルの内容を取得するコマンドで、ここではreadmeファイルの内容を取得しています。</p>
+<pre><code>$ ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
+Hello and Welcome to IPFS!
+
+██╗██████╗ ███████╗███████╗
+██║██╔══██╗██╔════╝██╔════╝
+██║██████╔╝█████╗  ███████╗
+██║██╔═══╝ ██╔══╝  ╚════██║
+██║██║     ██║     ███████║
+╚═╝╚═╝     ╚═╝     ╚══════╝
+
+If you're seeing this, you have successfully installed
+IPFS and are now interfacing with the ipfs merkledag!
+
+ -------------------------------------------------------
+| Warning:                                              |
+|   This is alpha software. Use at your own discretion! |
+|   Much is missing or lacking polish. There are bugs.  |
+|   Not yet secure. Read the security notes for more.   |
+ -------------------------------------------------------
+
+Check out some of the other files in this directory:
+
+  ./about
+  ./help
+  ./quick-start     &lt;-- usage examples
+  ./readme          &lt;-- this file
+  ./security-notes
+</code></pre><p>先の章で紹介したとおり、IPFSはコンテンツアドレス型の仕組みを取り入れており、通常のファイルシステムとはファイルの取扱い方法が大きく異なっています。次節より実際にgo-ipfsを操作しIPFS上でファイルがどのように扱われるのかを見ていきましょう。</p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/what_is_ipfs/" title="IPFSとは何か？"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/adding_files/" title="IPFSへのファイルの追加" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1611357756"></script>
+    <script src="/js/jquery.sticky.js?1611357756"></script>
+    <script src="/js/featherlight.min.js?1611357756"></script>
+    <script src="/js/highlight.pack.js?1611357756"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1611357756"></script>
+    <script src="/js/learn.js?1611357756"></script>
+    <script src="/js/hugo-learn.js?1611357756"></script>
+    
+        
+            <script src="/mermaid/mermaid.js?1611357756"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  </body>
+</html>

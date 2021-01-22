@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>パブリックゲートウェイの構築 :: IPFS入門</title>
+
+    
+    <link href="/css/nucleus.css?1611357756" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1611357756" rel="stylesheet">
+    <link href="/css/atelier-plateau-light.css?1611357756" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1611357756" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1611357756" rel="stylesheet">
+    <link href="/css/auto-complete.css?1611357756" rel="stylesheet">
+    <link href="/css/theme.css?1611357756" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1611357756" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1611357756"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/building_public_gateway/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <h4><a href="https://ipfs-book.decentralized-web.jp/">IPFS入門</a></h4>
+
+    </div>
+    
+  </div>
+  
+    <section id="homelinks">
+      <ul>
+        <li>
+            <a class="padding" href='/'><i class='fas fa-home'></i> Home</a>
+        </li>
+      </ul>
+    </section>
+  
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/what_is_ipfs/" title="IPFSとは何か？" class="dd-item
+        
+        
+        
+        ">
+      <a href="/what_is_ipfs/">
+          <b>1. </b>IPFSとは何か？
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/install_ipfs/" title="IPFSのインストール" class="dd-item
+        
+        
+        
+        ">
+      <a href="/install_ipfs/">
+          <b>2. </b>IPFSのインストール
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/adding_files/" title="IPFSへのファイルの追加" class="dd-item
+        
+        
+        
+        ">
+      <a href="/adding_files/">
+          <b>3. </b>IPFSへのファイルの追加
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/join_the_network/" title="コンテンツ共有" class="dd-item
+        
+        
+        
+        ">
+      <a href="/join_the_network/">
+          <b>4. </b>コンテンツ共有
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/naming_contents/" title="IPNSとDNSLink" class="dd-item
+        
+        
+        
+        ">
+      <a href="/naming_contents/">
+          <b>5. </b>IPNSとDNSLink
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/building_public_gateway/" title="パブリックゲートウェイの構築" class="dd-item
+        parent
+        active
+        
+        ">
+      <a href="/building_public_gateway/">
+          <b>6. </b>パブリックゲートウェイの構築
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/faq/" title="FAQ" class="dd-item
+        
+        
+        
+        ">
+      <a href="/faq/">
+          <b>7. </b>FAQ
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/ipfs-whitepaper-jp/" title="【参考】whitepaper 日本語訳" class="dd-item
+        
+        
+        
+        ">
+      <a href="/ipfs-whitepaper-jp/">
+          <b>8. </b>【参考】whitepaper 日本語訳
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+        
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani/ipfs-primer"><i class='fa fa-github'></i> Github repo</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani"><i class='fa fa-user'></i> Contact</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://book.ethereum-jp.net/"><i class='fa fa-link' aria-hidden='true'></i> Ethereum入門</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/'>IPFS入門</a> > パブリックゲートウェイの構築
+          
+        
+          
+        
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#リバースプロキシを利用した構築">リバースプロキシを利用した構築</a></li>
+        <li><a href="#1-go-ipfsの自動起動設定">1. go-ipfsの自動起動設定</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>パブリックゲートウェイの構築</h1>
+          
+
+        
+
+
+
+	<p>これまで述べきたとおりIPFSネットワークはHTTPプロトコルをベースとした既存のインターネットとは異なる独立したネットワークです。そのためIPFSのネットワークにインターネット（つまり既存のブラウザ）からアクセスするためにはIPFSネットワークへ橋渡してくれる場所を経由してアクセスする必要があります。その橋渡し役を担うのがIPFSゲートウェイであり、その中でも任意のユーザーに常時公開されているものをIPFSパブリックゲートウェイと呼びます。パブリックゲートウェイはいくつかあり、先の章で出てきた<code>https://ipfs.io/ipfs</code>や<a href="https://ipfs-gateway.decentralized-web.jp/">https://ipfs-gateway.decentralized-web.jp/</a>がそれに当たります。</p>
+<p>もちろんこれらの既に公開されているゲートウェイ経由でIPFSネットワークへアクセスすることも可能ですが、あなたが技術的に興味があれば自身でゲートウェイを構築し公開することも可能です。本章ではパブリックゲートウェイ構築方法の例を示します。</p>
+<h3 id="リバースプロキシを利用した構築">リバースプロキシを利用した構築</h3>
+<p>本章末尾のNoteに記載のとおりgo-ipfsを設定変更するだけで手軽に自身のIPFSノードをパブリックゲートウェイを構築することはできます。しかしこの方法は、<code>http</code>のアクセスのみで<code>https</code>でのアクセスを許可することができないこと、セキュリティ面での懸念があること、さらにアクセスが増えた場合の負荷分散が難しいというように、多くのデメリットがあります。そのためにWebサーバ（ここではnginxを想定します）をリバースプロキシとして利用しgo-ipfsへのアクセスを中継する方法を取るのが一般的です（下図）。</p>
+<p><img src="images/ipfs_gateway.png?width=40pc" alt="ipfs gateway"></p>
+<p>以下に<code>Ubuntu 16.04 LTS</code>環境での具体的な手順例を示します。（以降、go-ipfsが稼働するサーバがグローバルIPアドレスとドメインを持っておりDNS設定されている前提で進めます。）</p>
+<h3 id="1-go-ipfsの自動起動設定">1. go-ipfsの自動起動設定</h3>
+<p>先にインストールしているgo-ipfsをサーバ再起動時などに自動起動する設定を行います。</p>
+<pre><code>$ sudo vi /lib/systemd/system/ipfs-daemon.service
+</code></pre><p>で下記の内容が記されたファイルを生成します。ここではコマンド<code>/usr/local/bin/ipfs daemon</code>が<code>ubuntu</code>ユーザー＆グループで実行されることを指定しています。（その他の設定の詳細については<a href="http://enakai00.hatenablog.com/entry/20130917/1379374797">ここ</a>が参考になります。）</p>
+<pre><code>[Unit]
+Description=ipfs daemon
+
+[Service]
+ExecStart=/usr/local/bin/ipfs daemon
+Restart=always
+User=ubuntu
+Group=ubuntu
+
+[Install]
+WantedBy=multi-user.target
+</code></pre><p>用意したファイルでの自動起動を有効化し、実際にサーバ再起動時にgo-ipfsが自動起動されるかを確認します。</p>
+<pre><code>$ sudo systemctl enable ipfs-daemon
+Created symlink from /etc/systemd/system/multi-user.target.wants/ipfs-daemon.service to /lib/systemd/system/ipfs-daemon.service.
+$ sudo shutdown -r now #自動起動されるか実際にサーバ再起動し確認。
+$ ps aux |grep ipfs #プロセス確認
+ubuntu     639     1  4 11:21 ?        00:00:05 /usr/local/bin/ipfs daemon
+ubuntu     942   929  0 11:23 pts/0    00:00:00 grep --color=auto ipfs
+
+</code></pre><h4 id="2リバースプロキシに用いるnginxのインストールと設定">2.リバースプロキシに用いるnginxのインストールと設定</h4>
+<p>webサーバはapacheなどもありmod_proxyを導入することでリバースプロキシとして利用することも可能ですが、ここではwebサーバとしてnginxを採用したいと思います。nginxをまずサーバにインストールします。</p>
+<pre><code>$ sudo apt-get update
+$ sudo apt-get upgrade
+$ sudo apt-get install nginx
+
+</code></pre><p>下記ファイル内容のようにnginx設定を<code>vi</code>などを用いて当該ファイル内容を変更します。</p>
+<pre><code>$ cat /etc/nginx/sites-available/default
+
+# http(80番ポート)アクセスをhttps(443番ポート)にリダイレクトする設定
+server {
+    listen 80;
+    server_name ipfs-gateway.decentralized-web.jp;
+    return 301 https://$host$request_uri;
+}
+
+# httpsへのアクセスを受けた場合の設定
+server {
+  listen 443 ssl default_server;
+        index index.html index.htm index.nginx-debian.html;
+
+  # SSL証明書関連の設定。
+  # 証明書はLet's encrypt（https://letsencrypt.org/）を利用して用意。
+  # 設定内のドメインは各環境に合わせること。
+        server_name pfs-gateway.decentralized-web.jp;
+        ssl_certificate /etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/cert.pem;
+        ssl_certificate_key /etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/privkey.pem;
+
+  # バックエンドのgo-ipfsとの連携設定。
+  # ドメイン以下のアクセス全て（/）を/var/www/html以下のindex.htmlへ。
+        location / {
+        root /var/www/html;
+        }
+
+  # ドメイン以下/ipfs/か/ipns/の場合はgo-ipfsへ。
+        location ~*/ip[fn]s/.+ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        }
+}
+</code></pre><p>上記nginxの設定ファイル内のコメントにも書いたようにHTTPS通信する際の証明書は<a href="https://letsencrypt.org/">Let&rsquo;s encrypt</a>を利用して証明書を発行しています。証明書発行は自動で行われ容易にかつ手早く発行が可能です。Let&rsquo;s encryptについては<a href="https://knowledge.sakura.ad.jp/5573/">ここ</a>で詳しく解説してくれているので参考にしてください<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
+<p>最後にもう一度サーバ再起動を行いnginxとgo-ipfsが自動起動されることや所定のアドレスにブラウザからアクセスしコンテンツが表示されることを確認して完了です。</p>
+
+<div class="notices warning" ><p>上記の手順はFirewallの設定などセキュリティ関連の手順は割愛しています。不特定多数のアクセスを許可するサーバとしての十分なセキュリティ対策は別途必ず行うようにしてください。</p>
+</div>
+
+
+<div class="notices note" ><p>パブリックゲートウェイを構築する最も簡単な方法は、go-ipfsの設定ファイル[^1]内の<code>Addresses</code>項目で<code>&quot;Gateway&quot;: &quot;/ip4/127.0.0.1/tcp/8080&quot;</code>とローカルホストのみが許可されているところを、全てのIPアドレスからのアクセスを許可するように<code>&quot;Gateway&quot;: &quot;/ip4/0.0.0.0/tcp/8080&quot;</code>に変更することです。この設定状態で<code>ipfs daemon</code>コマンドを実行すれば、任意のクライアントのブラウザから、たとえばURL<code>http://[当該サーバIPアドレス]:8080/ipfs/QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o</code>にアクセスすることが可能になります。しかし、本文中に記載のとおりセキュリティや運用の側面からこの方法はあまり推奨されません。</p>
+</div>
+
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>もちろん<a href="https://letsencrypt.org/docs/">公式ドキュメント</a>も充実しています。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/naming_contents/" title="IPNSとDNSLink"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/faq/" title="FAQ" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1611357756"></script>
+    <script src="/js/jquery.sticky.js?1611357756"></script>
+    <script src="/js/featherlight.min.js?1611357756"></script>
+    <script src="/js/highlight.pack.js?1611357756"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1611357756"></script>
+    <script src="/js/learn.js?1611357756"></script>
+    <script src="/js/hugo-learn.js?1611357756"></script>
+    
+        
+            <script src="/mermaid/mermaid.js?1611357756"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  </body>
+</html>
