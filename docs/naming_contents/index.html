@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="generator" content="Hugo 0.74.3" />
+    <meta name="description" content="">
+
+
+    <link rel="icon" href="/images/favicon.png" type="image/png">
+
+    <title>IPNSとDNSLink :: IPFS入門</title>
+
+    
+    <link href="/css/nucleus.css?1611357756" rel="stylesheet">
+    <link href="/css/font-awesome.min.css?1611357756" rel="stylesheet">
+    <link href="/css/atelier-plateau-light.css?1611357756" rel="stylesheet">
+    <link href="/css/featherlight.min.css?1611357756" rel="stylesheet">
+    <link href="/css/perfect-scrollbar.min.css?1611357756" rel="stylesheet">
+    <link href="/css/auto-complete.css?1611357756" rel="stylesheet">
+    <link href="/css/theme.css?1611357756" rel="stylesheet">
+    <link href="/css/hugo-theme.css?1611357756" rel="stylesheet">
+    
+
+    <script src="/js/jquery-2.x.min.js?1611357756"></script>
+
+    <style type="text/css">
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+        :not(pre) > code + span.copy-to-clipboard {
+            display: none;
+        }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="/naming_contents/">
+    <nav id="sidebar" class="">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <h4><a href="https://ipfs-book.decentralized-web.jp/">IPFS入門</a></h4>
+
+    </div>
+    
+  </div>
+  
+    <section id="homelinks">
+      <ul>
+        <li>
+            <a class="padding" href='/'><i class='fas fa-home'></i> Home</a>
+        </li>
+      </ul>
+    </section>
+  
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/what_is_ipfs/" title="IPFSとは何か？" class="dd-item
+        
+        
+        
+        ">
+      <a href="/what_is_ipfs/">
+          <b>1. </b>IPFSとは何か？
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/install_ipfs/" title="IPFSのインストール" class="dd-item
+        
+        
+        
+        ">
+      <a href="/install_ipfs/">
+          <b>2. </b>IPFSのインストール
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/adding_files/" title="IPFSへのファイルの追加" class="dd-item
+        
+        
+        
+        ">
+      <a href="/adding_files/">
+          <b>3. </b>IPFSへのファイルの追加
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/join_the_network/" title="コンテンツ共有" class="dd-item
+        
+        
+        
+        ">
+      <a href="/join_the_network/">
+          <b>4. </b>コンテンツ共有
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/naming_contents/" title="IPNSとDNSLink" class="dd-item
+        parent
+        active
+        
+        ">
+      <a href="/naming_contents/">
+          <b>5. </b>IPNSとDNSLink
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/building_public_gateway/" title="パブリックゲートウェイの構築" class="dd-item
+        
+        
+        
+        ">
+      <a href="/building_public_gateway/">
+          <b>6. </b>パブリックゲートウェイの構築
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/faq/" title="FAQ" class="dd-item
+        
+        
+        
+        ">
+      <a href="/faq/">
+          <b>7. </b>FAQ
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/ipfs-whitepaper-jp/" title="【参考】whitepaper 日本語訳" class="dd-item
+        
+        
+        
+        ">
+      <a href="/ipfs-whitepaper-jp/">
+          <b>8. </b>【参考】whitepaper 日本語訳
+          
+      </a>
+      
+      
+    </li>
+  
+ 
+
+          
+        
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani/ipfs-primer"><i class='fa fa-github'></i> Github repo</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://github.com/a-mitani"><i class='fa fa-user'></i> Contact</a>
+              </li>
+          
+              <li>
+                  <a class="padding" href="https://book.ethereum-jp.net/"><i class='fa fa-link' aria-hidden='true'></i> Ethereum入門</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="footer">
+      <p>Built with <a href="https://github.com/matcornic/hugo-theme-learn"><i class="fas fa-heart"></i></a> from <a href="https://getgrav.org">Grav</a> and <a href="https://gohugo.io/">Hugo</a></p>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fa fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                    
+          
+          
+            
+            
+          
+          
+            <a href='/'>IPFS入門</a> > IPNSとDNSLink
+          
+        
+          
+        
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#ipns">IPNS</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+
+        
+        <div id="body-inner">
+          
+            <h1>IPNSとDNSLink</h1>
+          
+
+        
+
+
+
+	<p>これまでIPFSの特徴であるコンテンツ指向のプロトコルは、コンテンツの内容により一意にハッシュ値が決まり、そのハッシュ値によりコンテンツにアクセスする旨を記載してきました。これは<a href="/what_is_ipfs">IPFSとは何か？</a>でお伝えした通り、ファイルの改竄などを防ぐ有効な手立てとなっています。</p>
+<p>しかし、コンテンツのハッシュ値によるアクセスだけでは不都合が生じる場合もあります。それはコンテンツを更新した場合です。一般的にWeb上のコンテンツは更新や追加がしばしば行われます。その度にアドレスが新しいハッシュ値となってはかなり煩わしい事態になります。</p>
+<p>そのため、IPFSではコンテンツに名前を付ける（Naming: 命名）方策がなされています。それが本節で解説するIPNSとDNSLinkとなります。両者は共にコンテンツに命名する仕組みなのですが、現在のところ、名前解決速度や可読性の高いアドレスを指定できるなどの優位性からDNSLinkがより一般的に利用されています。それぞれについて詳しく見ていきましょう。</p>
+<h3 id="ipns">IPNS</h3>
+<p>IPNS（Inter Planetary Naming System）はコンテンツのハッシュ値をノードIDに紐付け、コンテンツにアクセスする際にノードIDを経由してアクセスを行うようにする仕組みです。ノードIDはノードを識別するために、重複のない世界に１つだけのIDのため、そのIDをキーとしてコンテンツへアクセスすることを行います。
+コンテンツが更新されそのハッシュ値が変わった場合には、ノードIDとコンテンツハッシュの紐付けを更新することでノードIDにより更新されたコンテンツにアクセスができるようになる仕組みです。</p>
+<p>では実際にIPNSの動作を確認していきましょう。</p>
+<p>まずは非常にシンプルなWebページを作成してみましょう。適当なディレクトリを作成し、その中に<code>index.html</code>を作成します。</p>
+<pre><code>$ mkdir test-page
+$ vi test-page/index.html
+</code></pre><p><code>index.html</code>の内容は例えば以下のように編集します。</p>
+<pre><code>$ cat test-page/index.html
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;test-page&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;&lt;center&gt;
+&lt;h1&gt;It's a Nice Day!!&lt;/h1&gt;
+&lt;/center&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><p>ここで作成したディレクトリとファイルを下記のコマンドで再帰的にIPFSに追加します。</p>
+<pre><code>$ ipfs add -r test-page/
+added QmcC9oDaHU74QgXGxdVcfa3UZVu4cWbGk8JQQRATHNHmRF test-page/index.html
+added QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL test-page
+</code></pre><p>ここでIPNSの仕組みを用いて今回作ったテストページのハッシュ<code>QmXi2mj3...</code>をノードIDに紐付けます。コマンドは下記の通りです。</p>
+<pre><code>$ ipfs name publish QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL
+Published to QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij: /ipfs/QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL
+</code></pre><p>ここでアウトプット結果は、ノードID<code>QmZdddUU...</code>に対してコンテンツ<code>QmXi2mj3...</code>が紐付けられたことを示しています。ノードIDに紐付けられたコンテンツはgatewayを通じて下記のURLからアクセスが可能になります。</p>
+<pre><code>https://ipfs-gateway.decentralized-web.jp/ipns/QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij/
+</code></pre><p>ここでURLのドメイン以下の最初の部分に注意してください。これまでのアクセスではこの部分は<code>ipfs</code>でしたが、IPNSでのアクセスを行う場合は<code>ipns</code>を指定することになります。</p>
+<p><img src="images/page_before.png?width=40pc" alt="web_page_before"></p>
+<p>IPNSの仕組みはページのコンテンツが更新されても同一のアドレスでアクセスを可能にするものでした。その動きを確かめましょう。コンテンツを下記の様に内容に追加し、再度<code>ipfs add</code>コマンドでIPFSにコンテンツを共有します。</p>
+<pre><code>$ cat test-page/index.html
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;test-page&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;&lt;center&gt;
+&lt;h1&gt;It's a Nice Day!!&lt;/h1&gt;
+&lt;br/&gt;
+&lt;h1&gt;Let's go out!!&lt;/h1&gt;
+&lt;/center&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre><pre><code>$ ipfs add -r test-page/
+added Qmait5a9gaeFcxV4da7F4kny2NsdCfH1Gjs7YrthizZk23 test-page/index.html
+added QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42 test-page
+</code></pre><p>先ほどとコンテンツの内容が変わったため、ハッシュ値も先ほどのものから変化しています。IPNSでは下記のように<code>ipfs name publis</code>コマンドにより更新後のハッシュ値を再度、ノードIDに紐付けなおすことで、更新後のコンテンツも依然と同じアドレスでアクセスできる様にします。</p>
+<pre><code>$ ipfs name publish QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42
+Published to QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij: /ipfs/QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42
+</code></pre><p>では、先ほどと同様にgatewayを通じて先ほどと同一の下記のURLからアクセスしてみましょう</p>
+<pre><code>https://ipfs-gateway.decentralized-web.jp/ipns/QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij/
+</code></pre><p>下図のように同一URLで更新後のコンテンツが閲覧できることが見てとれます。</p>
+<p><img src="images/page_after.png?width=40pc" alt="web_page_after"></p>
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div>
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="/join_the_network/" title="コンテンツ共有"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="/building_public_gateway/" title="パブリックゲートウェイの構築" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="/js/clipboard.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.min.js?1611357756"></script>
+    <script src="/js/perfect-scrollbar.jquery.min.js?1611357756"></script>
+    <script src="/js/jquery.sticky.js?1611357756"></script>
+    <script src="/js/featherlight.min.js?1611357756"></script>
+    <script src="/js/highlight.pack.js?1611357756"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="/js/modernizr.custom-3.6.0.js?1611357756"></script>
+    <script src="/js/learn.js?1611357756"></script>
+    <script src="/js/hugo-learn.js?1611357756"></script>
+    
+        
+            <script src="/mermaid/mermaid.js?1611357756"></script>
+        
+        <script>
+            mermaid.initialize({ startOnLoad: true });
+        </script>
+    
+    
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+    });
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+  </body>
+</html>
