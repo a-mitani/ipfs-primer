@@ -30,3 +30,8 @@ canonifyurls = true
   url = "https://book.ethereum-jp.net/"
   weight = 40
 
+[[menu.shortcuts]]
+  name = "<i class='fa fa-link' aria-hidden='true'></i> Pyroで実践するベイズ機械学習"
+  url = "https://pyro-book.data-hacker.net/"
+  weight = 41
+
