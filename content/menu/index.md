@@ -2,7 +2,7 @@
 headless: true
 ---
 
-- [Pyroとは]({{< relref "what_is_ipfs" >}})
+- [IPFSとは]({{< relref "what_is_ipfs" >}})
 - [IPFSのインストール]({{< relref "install_ipfs" >}})
 - [IPFSへのファイルの追加]({{< relref "adding_files" >}})
 - [コンテンツ共有]({{< relref "join_the_network" >}})
