@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="IPNSとDNSLink #  これまでIPFSの特徴であるコンテンツ指向のプロトコルは、コンテンツの内容により一意にハッシュ値が決まり、そのハッシュ値によりコンテンツにアクセスする旨を記載してきました。これは IPFSとは何か？でお伝えした通り、ファイルの改竄などを防ぐ有効な手立てとなっています。
+しかし、コンテンツのハッシュ値によるアクセスだけでは不都合が生じる場合もあります。それはコンテンツを更新した場合です。一般的にWeb上のコンテンツは更新や追加がしばしば行われます。その度にアドレスが新しいハッシュ値となってはかなり煩わしい事態になります。
+そのため、IPFSではコンテンツに名前を付ける（Naming: 命名）方策がなされています。それが本節で解説するIPNSとDNSLinkとなります。両者は共にコンテンツに命名する仕組みなのですが、現在のところ、名前解決速度や可読性の高いアドレスを指定できるなどの優位性からDNSLinkがより一般的に利用されています。それぞれについて詳しく見ていきましょう。
+IPNS #  IPNS（Inter Planetary Naming System）はコンテンツのハッシュ値をノードIDに紐付け、コンテンツにアクセスする際にノードIDを経由してアクセスを行うようにする仕組みです。ノードIDはノードを識別するために、重複のない世界に１つだけのIDのため、そのIDをキーとしてコンテンツへアクセスすることを行います。 コンテンツが更新されそのハッシュ値が変わった場合には、ノードIDとコンテンツハッシュの紐付けを更新することでノードIDにより更新されたコンテンツにアクセスができるようになる仕組みです。
+では実際にIPNSの動作を確認していきましょう。
+まずは非常にシンプルなWebページを作成してみましょう。適当なディレクトリを作成し、その中にindex.htmlを作成します。
+$ mkdir test-page $ vi test-page/index.html index.htmlの内容は例えば以下のように編集します。
+$ cat test-page/index.html &lt;html&gt; &lt;head&gt;&lt;title&gt;test-page&lt;/title&gt;&lt;/head&gt; &lt;body&gt;&lt;center&gt; &lt;h1&gt;It&#39;s a Nice Day!!&lt;/h1&gt; &lt;/center&gt;&lt;/body&gt; &lt;/html&gt; ここで作成したディレクトリとファイルを下記のコマンドで再帰的にIPFSに追加します。
+$ ipfs add -r test-page/ added QmcC9oDaHU74QgXGxdVcfa3UZVu4cWbGk8JQQRATHNHmRF test-page/index.html added QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL test-page ここでIPNSの仕組みを用いて今回作ったテストページのハッシュQmXi2mj3...をノードIDに紐付けます。コマンドは下記の通りです。
+$ ipfs name publish QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL Published to QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij: /ipfs/QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL ここでアウトプット結果は、ノードIDQmZdddUU...に対してコンテンツQmXi2mj3...が紐付けられたことを示しています。ノードIDに紐付けられたコンテンツはgatewayを通じて下記のURLからアクセスが可能になります。
+https://ipfs-gateway.decentralized-web.jp/ipns/QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij/ ここでURLのドメイン以下の最初の部分に注意してください。これまでのアクセスではこの部分はipfsでしたが、IPNSでのアクセスを行う場合はipnsを指定することになります。
+ IPNSの仕組みはページのコンテンツが更新されても同一のアドレスでアクセスを可能にするものでした。その動きを確かめましょう。コンテンツを下記の様に内容に追加し、再度ipfs addコマンドでIPFSにコンテンツを共有します。
+$ cat test-page/index.html &lt;html&gt; &lt;head&gt;&lt;title&gt;test-page&lt;/title&gt;&lt;/head&gt; &lt;body&gt;&lt;center&gt; &lt;h1&gt;It&#39;s a Nice Day!">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="IPNSとDNSLink" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ipfs-book.decentralized-web.jp/naming_contents/" />
+
+<title>IPNSとDNSLink | IPFS入門</title>
+<link rel="manifest" href="https://ipfs-book.decentralized-web.jp/manifest.json">
+<link rel="icon" href="https://ipfs-book.decentralized-web.jp/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="https://ipfs-book.decentralized-web.jp/book.min.e62c87c0a5f78618c1d9654bac000b57fdba292e359cd3ae3a97d4774328868d.css" integrity="sha256-5iyHwKX3hhjB2WVLrAALV/26KS41nNOuOpfUd0Moho0=" crossorigin="anonymous">
+  <script defer src="https://ipfs-book.decentralized-web.jp/flexsearch.min.js"></script>
+  <script defer src="https://ipfs-book.decentralized-web.jp/en.search.min.45201c41c63dfa5023ac42a9e71a561467b37d881f1a6da5f452b71b83e45f8e.js" integrity="sha256-RSAcQcY9&#43;lAjrEKp5xpWFGezfYgfGm2l9FK3G4PkX44=" crossorigin="anonymous"></script>
+
+  <script defer src="https://ipfs-book.decentralized-web.jp/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="https://ipfs-book.decentralized-web.jp/naming_contents/index.xml" title="IPFS入門" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="https://ipfs-book.decentralized-web.jp/"><span>IPFS入門</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/what_is_ipfs/">Pyroとは</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/install_ipfs/">IPFSのインストール</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/adding_files/">IPFSへのファイルの追加</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/join_the_network/">コンテンツ共有</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/naming_contents/"class=active>IPNSとDNSLink</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/building_public_gateway/">パブリックゲートウェイの構築</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/faq/">FAQ</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/ipfs-whitepaper-jp/">参考：whitepaper 日本語訳</a>
+<br/>
+<br/></li>
+</ul>
+<hr>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/a-mitani/ipfs-primer" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://pyro-book.data-hacker.net/" target="_blank" rel="noopener">
+        Pyroで実践するベイズ機械学習
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="https://ipfs-book.decentralized-web.jp/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>IPNSとDNSLink</strong>
+
+  <label for="toc-control">
+    
+    <img src="https://ipfs-book.decentralized-web.jp/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#ipnsとdnslink">IPNSとDNSLink</a>
+      <ul>
+        <li><a href="#ipns">IPNS</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="ipnsとdnslink">
+  IPNSとDNSLink
+  <a class="anchor" href="#ipns%e3%81%a8dnslink">#</a>
+</h1>
+<p>これまでIPFSの特徴であるコンテンツ指向のプロトコルは、コンテンツの内容により一意にハッシュ値が決まり、そのハッシュ値によりコンテンツにアクセスする旨を記載してきました。これは
+  <a href="https://ipfs-book.decentralized-web.jp/what_is_ipfs/">IPFSとは何か？</a>でお伝えした通り、ファイルの改竄などを防ぐ有効な手立てとなっています。</p>
+<p>しかし、コンテンツのハッシュ値によるアクセスだけでは不都合が生じる場合もあります。それはコンテンツを更新した場合です。一般的にWeb上のコンテンツは更新や追加がしばしば行われます。その度にアドレスが新しいハッシュ値となってはかなり煩わしい事態になります。</p>
+<p>そのため、IPFSではコンテンツに名前を付ける（Naming: 命名）方策がなされています。それが本節で解説するIPNSとDNSLinkとなります。両者は共にコンテンツに命名する仕組みなのですが、現在のところ、名前解決速度や可読性の高いアドレスを指定できるなどの優位性からDNSLinkがより一般的に利用されています。それぞれについて詳しく見ていきましょう。</p>
+<h2 id="ipns">
+  IPNS
+  <a class="anchor" href="#ipns">#</a>
+</h2>
+<p>IPNS（Inter Planetary Naming System）はコンテンツのハッシュ値をノードIDに紐付け、コンテンツにアクセスする際にノードIDを経由してアクセスを行うようにする仕組みです。ノードIDはノードを識別するために、重複のない世界に１つだけのIDのため、そのIDをキーとしてコンテンツへアクセスすることを行います。
+コンテンツが更新されそのハッシュ値が変わった場合には、ノードIDとコンテンツハッシュの紐付けを更新することでノードIDにより更新されたコンテンツにアクセスができるようになる仕組みです。</p>
+<p>では実際にIPNSの動作を確認していきましょう。</p>
+<p>まずは非常にシンプルなWebページを作成してみましょう。適当なディレクトリを作成し、その中に<code>index.html</code>を作成します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ mkdir test-page
+$ vi test-page/index.html
+</code></pre></div><p><code>index.html</code>の内容は例えば以下のように編集します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat test-page/index.html
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;test-page&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;&lt;center&gt;
+&lt;h1&gt;It<span style="color:#960050;background-color:#1e0010">&#39;</span>s a Nice Day!!&lt;/h1&gt;
+&lt;/center&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div><p>ここで作成したディレクトリとファイルを下記のコマンドで再帰的にIPFSに追加します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipfs add -r test-page/
+added QmcC9oDaHU74QgXGxdVcfa3UZVu4cWbGk8JQQRATHNHmRF test-page/index.html
+added QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL test-page
+</code></pre></div><p>ここでIPNSの仕組みを用いて今回作ったテストページのハッシュ<code>QmXi2mj3...</code>をノードIDに紐付けます。コマンドは下記の通りです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipfs name publish QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL
+Published to QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij: /ipfs/QmXi2mj3KbP6HREi9Vj5keYwTmE1VUrnVxchVyqRWBz3wL
+</code></pre></div><p>ここでアウトプット結果は、ノードID<code>QmZdddUU...</code>に対してコンテンツ<code>QmXi2mj3...</code>が紐付けられたことを示しています。ノードIDに紐付けられたコンテンツはgatewayを通じて下記のURLからアクセスが可能になります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">https://ipfs-gateway.decentralized-web.jp/ipns/QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij/
+</code></pre></div><p>ここでURLのドメイン以下の最初の部分に注意してください。これまでのアクセスではこの部分は<code>ipfs</code>でしたが、IPNSでのアクセスを行う場合は<code>ipns</code>を指定することになります。</p>
+<p>
+  <img src="images/page_before.png" alt="web_page_before" /></p>
+<p>IPNSの仕組みはページのコンテンツが更新されても同一のアドレスでアクセスを可能にするものでした。その動きを確かめましょう。コンテンツを下記の様に内容に追加し、再度<code>ipfs add</code>コマンドでIPFSにコンテンツを共有します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat test-page/index.html
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;test-page&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;&lt;center&gt;
+&lt;h1&gt;It<span style="color:#e6db74">&#39;s a Nice Day!!&lt;/h1&gt;
+</span><span style="color:#e6db74">&lt;br/&gt;
+</span><span style="color:#e6db74">&lt;h1&gt;Let&#39;</span>s go out!!&lt;/h1&gt;
+&lt;/center&gt;&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipfs add -r test-page/
+added Qmait5a9gaeFcxV4da7F4kny2NsdCfH1Gjs7YrthizZk23 test-page/index.html
+added QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42 test-page
+</code></pre></div><p>先ほどとコンテンツの内容が変わったため、ハッシュ値も先ほどのものから変化しています。IPNSでは下記のように<code>ipfs name publis</code>コマンドにより更新後のハッシュ値を再度、ノードIDに紐付けなおすことで、更新後のコンテンツも依然と同じアドレスでアクセスできる様にします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipfs name publish QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42
+Published to QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij: /ipfs/QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42
+</code></pre></div><p>では、先ほどと同様にgatewayを通じて先ほどと同一の下記のURLからアクセスしてみましょう</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">https://ipfs-gateway.decentralized-web.jp/ipns/QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij/
+</code></pre></div><p>下図のように同一URLで更新後のコンテンツが閲覧できることが見てとれます。</p>
+<p>
+  <img src="images/page_after.png" alt="web_page_after" /></p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function select(element){const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(element);selection.removeAllRanges();selection.addRange(range);}
+document.querySelectorAll("pre code").forEach(code=>{code.addEventListener("click",function(event){select(code.parentElement);if(navigator.clipboard){navigator.clipboard.writeText(code.parentElement.textContent);}});});})();</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#ipnsとdnslink">IPNSとDNSLink</a>
+      <ul>
+        <li><a href="#ipns">IPNS</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

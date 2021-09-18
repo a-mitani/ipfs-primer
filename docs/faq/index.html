@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="FAQ #  Q: IPFSリポジトリを再度初期化するには？ #  IPFSのノードのリポジトリ情報は全て${HOME}/.ipfsディレクトリ内に保存されています（ここで${HOME}はユーザーのHOMEディレクトリです）。そのため、本ディレクトリとその内容を全て削除し、再度ipfs initコマンドを実行することで再初期化が可能になります。以下、ubuntu環境でのコマンド例です。
+※ 事前にipfs daemonでipfsが動いている状態の場合は事前にkillしておく必要があります。
+$ cd ~ #HOMEディレクトリへの移動 $ ls .ipfs blocks config datastore datastore_spec keystore version $ rm -rf .ipfs $ ipfs init initializing IPFS node at /home/ubuntu/.ipfs generating 2048-bit RSA keypair...done peer identity: QmTfTzbaoo4K98VsfG7efr3A4FErsEXAc5utcWjnsCaiz1 to get started, enter: ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme ">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="FAQ" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ipfs-book.decentralized-web.jp/faq/" />
+
+<title>FAQ | IPFS入門</title>
+<link rel="manifest" href="https://ipfs-book.decentralized-web.jp/manifest.json">
+<link rel="icon" href="https://ipfs-book.decentralized-web.jp/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="https://ipfs-book.decentralized-web.jp/book.min.e62c87c0a5f78618c1d9654bac000b57fdba292e359cd3ae3a97d4774328868d.css" integrity="sha256-5iyHwKX3hhjB2WVLrAALV/26KS41nNOuOpfUd0Moho0=" crossorigin="anonymous">
+  <script defer src="https://ipfs-book.decentralized-web.jp/flexsearch.min.js"></script>
+  <script defer src="https://ipfs-book.decentralized-web.jp/en.search.min.45201c41c63dfa5023ac42a9e71a561467b37d881f1a6da5f452b71b83e45f8e.js" integrity="sha256-RSAcQcY9&#43;lAjrEKp5xpWFGezfYgfGm2l9FK3G4PkX44=" crossorigin="anonymous"></script>
+
+  <script defer src="https://ipfs-book.decentralized-web.jp/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="https://ipfs-book.decentralized-web.jp/faq/index.xml" title="IPFS入門" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="https://ipfs-book.decentralized-web.jp/"><span>IPFS入門</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/what_is_ipfs/">Pyroとは</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/install_ipfs/">IPFSのインストール</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/adding_files/">IPFSへのファイルの追加</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/join_the_network/">コンテンツ共有</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/naming_contents/">IPNSとDNSLink</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/building_public_gateway/">パブリックゲートウェイの構築</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/faq/"class=active>FAQ</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/ipfs-whitepaper-jp/">参考：whitepaper 日本語訳</a>
+<br/>
+<br/></li>
+</ul>
+<hr>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/a-mitani/ipfs-primer" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://pyro-book.data-hacker.net/" target="_blank" rel="noopener">
+        Pyroで実践するベイズ機械学習
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="https://ipfs-book.decentralized-web.jp/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>FAQ</strong>
+
+  <label for="toc-control">
+    
+    <img src="https://ipfs-book.decentralized-web.jp/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#faq">FAQ</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#q-ipfsリポジトリを再度初期化するには">Q: IPFSリポジトリを再度初期化するには？</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="faq">
+  FAQ
+  <a class="anchor" href="#faq">#</a>
+</h1>
+<h3 id="q-ipfsリポジトリを再度初期化するには">
+  Q: IPFSリポジトリを再度初期化するには？
+  <a class="anchor" href="#q-ipfs%e3%83%aa%e3%83%9d%e3%82%b8%e3%83%88%e3%83%aa%e3%82%92%e5%86%8d%e5%ba%a6%e5%88%9d%e6%9c%9f%e5%8c%96%e3%81%99%e3%82%8b%e3%81%ab%e3%81%af">#</a>
+</h3>
+<p>IPFSのノードのリポジトリ情報は全て<code>${HOME}/.ipfs</code>ディレクトリ内に保存されています（ここで<code>${HOME}</code>はユーザーのHOMEディレクトリです）。そのため、本ディレクトリとその内容を全て削除し、再度<code>ipfs init</code>コマンドを実行することで再初期化が可能になります。以下、ubuntu環境でのコマンド例です。</p>
+<p>※ 事前に<code>ipfs daemon</code>でipfsが動いている状態の場合は事前に<code>kill</code>しておく必要があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cd ~ <span style="color:#75715e">#HOMEディレクトリへの移動</span>
+$ ls .ipfs
+blocks  config  datastore  datastore_spec  keystore  version
+$ rm -rf .ipfs
+$ ipfs init
+initializing IPFS node at /home/ubuntu/.ipfs
+generating 2048-bit RSA keypair...done
+peer identity: QmTfTzbaoo4K98VsfG7efr3A4FErsEXAc5utcWjnsCaiz1
+to get started, enter:
+
+	ipfs cat /ipfs/QmS4ustL54uo8FzR9455qaxZwuMiUhyvMcX9Ba8nUH4uVv/readme
+</code></pre></div></article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function select(element){const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(element);selection.removeAllRanges();selection.addRange(range);}
+document.querySelectorAll("pre code").forEach(code=>{code.addEventListener("click",function(event){select(code.parentElement);if(navigator.clipboard){navigator.clipboard.writeText(code.parentElement.textContent);}});});})();</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#faq">FAQ</a>
+      <ul>
+        <li>
+          <ul>
+            <li><a href="#q-ipfsリポジトリを再度初期化するには">Q: IPFSリポジトリを再度初期化するには？</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

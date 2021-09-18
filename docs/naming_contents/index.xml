@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>IPNSとDNSLink on IPFS入門</title>
+    <link>https://ipfs-book.decentralized-web.jp/naming_contents/</link>
+    <description>Recent content in IPNSとDNSLink on IPFS入門</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://ipfs-book.decentralized-web.jp/naming_contents/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>

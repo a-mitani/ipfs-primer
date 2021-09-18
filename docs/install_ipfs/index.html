@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="IPFSのインストール #  先の章でIPFSはP2P型のファイルシステムであることを説明しました。IPFSを利用するためにIPFSクライアントをインストールする必要があります。ここではGo言語で実装されたクライアントであるgo-ipfsを利用します。
+go-ipfsのインストール #  go-ipfsのインストールは非常に容易です。ここでは、Ubuntu 18.04 LTS環境での例を示しますが他OSでも同様です。基本的には go-ipfsのダウンロードサイトよりビルド済みバイナリパッケージをダウンロードして解凍したのち、実行モジュールをPATHが通っているディレクトリに配置するスクリプトを動かすだけです。下記にコマンド例を示します。
+$ wget https://dist.ipfs.io/go-ipfs/v0.5.0/go-ipfs_v0.5.0_linux-amd64.tar.gz #URLは、環境やバージョンにより適宜変更してください。 $ tar xvzf go-ipfs_v0.5.0_linux-amd64.tar.gz $ cd go-ipfs/ $ sudo ./install.sh ここで、下記のようにipfs versionのコマンドを実行しバージョン情報が表示されれば問題なくインストールされています。
+$ ipfs version ipfs version 0.5.0 ■Tips: go-ipfsのアップデート #  新しいバージョンのgo-ipfsにアップデートをする場合も、上記のインストール手順を新しいバージョンのモジュールで行うことでアップデート可能です。ただし、go-ipfsをデーモンとして起動（後述）している場合はそれを停止してから行ってください。
+​
+IPFSリポジトリの初期化 #  go-ipfsのインストールを終えたら、IPFSのP2Pネットワークに参加するために下記のコマンドを実行してローカルのIPFSリポジトリを初期化します。
+$ ipfs init initializing IPFS node at /home/ubuntu/.ipfs generating 2048-bit RSA keypair...done peer identity: QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ1h8Vpk8zu7s to get started, enter: ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme 実行結果に示されるようにユーザーのhomeディレクトリ直下に.ipfsディレクトリが生成される。このディレクトリがIPFSのリポジトリとなります。
+実行結果の最後に示されたipfs cat ...のコマンドをコンソール上で実行してみましょう。詳細は後述しますがipfs catはIPFSネットワーク上に保存されているファイルの内容を取得するコマンドで、ここではreadmeファイルの内容を取得しています。">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="IPFSのインストール" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ipfs-book.decentralized-web.jp/install_ipfs/" />
+
+<title>IPFSのインストール | IPFS入門</title>
+<link rel="manifest" href="https://ipfs-book.decentralized-web.jp/manifest.json">
+<link rel="icon" href="https://ipfs-book.decentralized-web.jp/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="https://ipfs-book.decentralized-web.jp/book.min.e62c87c0a5f78618c1d9654bac000b57fdba292e359cd3ae3a97d4774328868d.css" integrity="sha256-5iyHwKX3hhjB2WVLrAALV/26KS41nNOuOpfUd0Moho0=" crossorigin="anonymous">
+  <script defer src="https://ipfs-book.decentralized-web.jp/flexsearch.min.js"></script>
+  <script defer src="https://ipfs-book.decentralized-web.jp/en.search.min.45201c41c63dfa5023ac42a9e71a561467b37d881f1a6da5f452b71b83e45f8e.js" integrity="sha256-RSAcQcY9&#43;lAjrEKp5xpWFGezfYgfGm2l9FK3G4PkX44=" crossorigin="anonymous"></script>
+
+  <script defer src="https://ipfs-book.decentralized-web.jp/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="https://ipfs-book.decentralized-web.jp/install_ipfs/index.xml" title="IPFS入門" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="https://ipfs-book.decentralized-web.jp/"><span>IPFS入門</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/what_is_ipfs/">Pyroとは</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/install_ipfs/"class=active>IPFSのインストール</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/adding_files/">IPFSへのファイルの追加</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/join_the_network/">コンテンツ共有</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/naming_contents/">IPNSとDNSLink</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/building_public_gateway/">パブリックゲートウェイの構築</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/faq/">FAQ</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/ipfs-whitepaper-jp/">参考：whitepaper 日本語訳</a>
+<br/>
+<br/></li>
+</ul>
+<hr>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/a-mitani/ipfs-primer" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://pyro-book.data-hacker.net/" target="_blank" rel="noopener">
+        Pyroで実践するベイズ機械学習
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="https://ipfs-book.decentralized-web.jp/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>IPFSのインストール</strong>
+
+  <label for="toc-control">
+    
+    <img src="https://ipfs-book.decentralized-web.jp/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#ipfsのインストール">IPFSのインストール</a>
+      <ul>
+        <li><a href="#go-ipfsのインストール">go-ipfsのインストール</a>
+          <ul>
+            <li></li>
+            <li><a href="#ipfsリポジトリの初期化">IPFSリポジトリの初期化</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="ipfsのインストール">
+  IPFSのインストール
+  <a class="anchor" href="#ipfs%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab">#</a>
+</h1>
+<p>先の章でIPFSはP2P型のファイルシステムであることを説明しました。IPFSを利用するためにIPFSクライアントをインストールする必要があります。ここではGo言語で実装されたクライアントであるgo-ipfsを利用します。</p>
+<h2 id="go-ipfsのインストール">
+  go-ipfsのインストール
+  <a class="anchor" href="#go-ipfs%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab">#</a>
+</h2>
+<p>go-ipfsのインストールは非常に容易です。ここでは、<code>Ubuntu 18.04 LTS</code>環境での例を示しますが他OSでも同様です。基本的には
+  <a href="https://dist.ipfs.io/#go-ipfs">go-ipfsのダウンロードサイト</a>よりビルド済みバイナリパッケージをダウンロードして解凍したのち、実行モジュールをPATHが通っているディレクトリに配置するスクリプトを動かすだけです。下記にコマンド例を示します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ wget https://dist.ipfs.io/go-ipfs/v0.5.0/go-ipfs_v0.5.0_linux-amd64.tar.gz    <span style="color:#75715e">#URLは、環境やバージョンにより適宜変更してください。</span>
+$ tar xvzf go-ipfs_v0.5.0_linux-amd64.tar.gz
+$ cd go-ipfs/
+$ sudo ./install.sh
+</code></pre></div><p>ここで、下記のように<code>ipfs version</code>のコマンドを実行しバージョン情報が表示されれば問題なくインストールされています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipfs version
+ipfs version 0.5.0
+</code></pre></div><h4 id="tips--go-ipfsのアップデート">
+  ■Tips:  go-ipfsのアップデート
+  <a class="anchor" href="#tips--go-ipfs%e3%81%ae%e3%82%a2%e3%83%83%e3%83%97%e3%83%87%e3%83%bc%e3%83%88">#</a>
+</h4>
+<p>新しいバージョンのgo-ipfsにアップデートをする場合も、上記のインストール手順を新しいバージョンのモジュールで行うことでアップデート可能です。ただし、go-ipfsをデーモンとして起動（後述）している場合はそれを停止してから行ってください。</p>
+<p>​</p>
+<h3 id="ipfsリポジトリの初期化">
+  IPFSリポジトリの初期化
+  <a class="anchor" href="#ipfs%e3%83%aa%e3%83%9d%e3%82%b8%e3%83%88%e3%83%aa%e3%81%ae%e5%88%9d%e6%9c%9f%e5%8c%96">#</a>
+</h3>
+<p>go-ipfsのインストールを終えたら、IPFSのP2Pネットワークに参加するために下記のコマンドを実行してローカルのIPFSリポジトリを初期化します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipfs init
+initializing IPFS node at /home/ubuntu/.ipfs
+generating 2048-bit RSA keypair...done
+peer identity: QmP5PY85F8XjH5gF67qXLCmU3BxyAW7NdFJ1h8Vpk8zu7s
+to get started, enter:
+
+    ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
+</code></pre></div><p>実行結果に示されるようにユーザーのhomeディレクトリ直下に<code>.ipfs</code>ディレクトリが生成される。このディレクトリがIPFSのリポジトリとなります。</p>
+<p>実行結果の最後に示された<code>ipfs cat ...</code>のコマンドをコンソール上で実行してみましょう。詳細は後述しますがipfs catはIPFSネットワーク上に保存されているファイルの内容を取得するコマンドで、ここではreadmeファイルの内容を取得しています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
+Hello and Welcome to IPFS!
+
+██╗██████╗ ███████╗███████╗
+██║██╔══██╗██╔════╝██╔════╝
+██║██████╔╝█████╗  ███████╗
+██║██╔═══╝ ██╔══╝  ╚════██║
+██║██║     ██║     ███████║
+╚═╝╚═╝     ╚═╝     ╚══════╝
+
+If you<span style="color:#960050;background-color:#1e0010">&#39;</span>re seeing this, you have successfully installed
+IPFS and are now interfacing with the ipfs merkledag!
+
+ -------------------------------------------------------
+| Warning:                                              |
+|   This is alpha software. Use at your own discretion! |
+|   Much is missing or lacking polish. There are bugs.  |
+|   Not yet secure. Read the security notes <span style="color:#66d9ef">for</span> more.   |
+ -------------------------------------------------------
+
+Check out some of the other files in this directory:
+
+  ./about
+  ./help
+  ./quick-start     &lt;-- usage examples
+  ./readme          &lt;-- this file
+  ./security-notes
+</code></pre></div><p>先の章で紹介したとおり、IPFSはコンテンツアドレス型の仕組みを取り入れており、通常のファイルシステムとはファイルの取扱い方法が大きく異なっています。次節より実際にgo-ipfsを操作しIPFS上でファイルがどのように扱われるのかを見ていきましょう。</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function select(element){const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(element);selection.removeAllRanges();selection.addRange(range);}
+document.querySelectorAll("pre code").forEach(code=>{code.addEventListener("click",function(event){select(code.parentElement);if(navigator.clipboard){navigator.clipboard.writeText(code.parentElement.textContent);}});});})();</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#ipfsのインストール">IPFSのインストール</a>
+      <ul>
+        <li><a href="#go-ipfsのインストール">go-ipfsのインストール</a>
+          <ul>
+            <li></li>
+            <li><a href="#ipfsリポジトリの初期化">IPFSリポジトリの初期化</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

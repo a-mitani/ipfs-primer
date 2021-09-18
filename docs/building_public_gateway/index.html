@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="パブリックゲートウェイの構築 #  これまで述べきたとおりIPFSネットワークはHTTPプロトコルをベースとした既存のインターネットとは異なる独立したネットワークです。そのためIPFSのネットワークにインターネット（つまり既存のブラウザ）からアクセスするためにはIPFSネットワークへ橋渡してくれる場所を経由してアクセスする必要があります。その橋渡し役を担うのがIPFSゲートウェイであり、その中でも任意のユーザーに常時公開されているものをIPFSパブリックゲートウェイと呼びます。パブリックゲートウェイはいくつかあり、先の章で出てきたhttps://ipfs.io/ipfsや https://ipfs-gateway.decentralized-web.jp/がそれに当たります。
+もちろんこれらの既に公開されているゲートウェイ経由でIPFSネットワークへアクセスすることも可能ですが、あなたが技術的に興味があれば自身でゲートウェイを構築し公開することも可能です。本章ではパブリックゲートウェイ構築方法の例を示します。
+リバースプロキシを利用した構築 #  本章末尾のNoteに記載のとおりgo-ipfsを設定変更するだけで手軽に自身のIPFSノードをパブリックゲートウェイを構築することはできます。しかしこの方法は、httpのアクセスのみでhttpsでのアクセスを許可することができないこと、セキュリティ面での懸念があること、さらにアクセスが増えた場合の負荷分散が難しいというように、多くのデメリットがあります。そのためにWebサーバ（ここではnginxを想定します）をリバースプロキシとして利用しgo-ipfsへのアクセスを中継する方法を取るのが一般的です（下図）。
+ 以下にUbuntu 16.04 LTS環境での具体的な手順例を示します。（以降、go-ipfsが稼働するサーバがグローバルIPアドレスとドメインを持っておりDNS設定されている前提で進めます。）
+1. go-ipfsの自動起動設定 #  先にインストールしているgo-ipfsをサーバ再起動時などに自動起動する設定を行います。
+$ sudo vi /lib/systemd/system/ipfs-daemon.service で下記の内容が記されたファイルを生成します。ここではコマンド/usr/local/bin/ipfs daemonがubuntuユーザー＆グループで実行されることを指定しています。（その他の設定の詳細については ここが参考になります。）
+[Unit] Description=ipfs daemon [Service] ExecStart=/usr/local/bin/ipfs daemon Restart=always User=ubuntu Group=ubuntu [Install] WantedBy=multi-user.target 用意したファイルでの自動起動を有効化し、実際にサーバ再起動時にgo-ipfsが自動起動されるかを確認します。
+$ sudo systemctl enable ipfs-daemon Created symlink from /etc/systemd/system/multi-user.target.wants/ipfs-daemon.service to /lib/systemd/system/ipfs-daemon.service. $ sudo shutdown -r now #自動起動されるか実際にサーバ再起動し確認。 $ ps aux |grep ipfs #プロセス確認 ubuntu 639 1 4 11:21 ? 00:00:05 /usr/local/bin/ipfs daemon ubuntu 942 929 0 11:23 pts/0 00:00:00 grep --color=auto ipfs 2.">
+<meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="パブリックゲートウェイの構築" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://ipfs-book.decentralized-web.jp/building_public_gateway/" />
+
+<title>パブリックゲートウェイの構築 | IPFS入門</title>
+<link rel="manifest" href="https://ipfs-book.decentralized-web.jp/manifest.json">
+<link rel="icon" href="https://ipfs-book.decentralized-web.jp/favicon.png" type="image/x-icon">
+<link rel="stylesheet" href="https://ipfs-book.decentralized-web.jp/book.min.e62c87c0a5f78618c1d9654bac000b57fdba292e359cd3ae3a97d4774328868d.css" integrity="sha256-5iyHwKX3hhjB2WVLrAALV/26KS41nNOuOpfUd0Moho0=" crossorigin="anonymous">
+  <script defer src="https://ipfs-book.decentralized-web.jp/flexsearch.min.js"></script>
+  <script defer src="https://ipfs-book.decentralized-web.jp/en.search.min.45201c41c63dfa5023ac42a9e71a561467b37d881f1a6da5f452b71b83e45f8e.js" integrity="sha256-RSAcQcY9&#43;lAjrEKp5xpWFGezfYgfGm2l9FK3G4PkX44=" crossorigin="anonymous"></script>
+
+  <script defer src="https://ipfs-book.decentralized-web.jp/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ=" crossorigin="anonymous"></script>
+<link rel="alternate" type="application/rss+xml" href="https://ipfs-book.decentralized-web.jp/building_public_gateway/index.xml" title="IPFS入門" />
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+  
+</head>
+<body dir="ltr">
+  <input type="checkbox" class="hidden toggle" id="menu-control" />
+  <input type="checkbox" class="hidden toggle" id="toc-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      <div class="book-menu-content">
+        
+  <nav>
+<h2 class="book-brand">
+  <a class="flex align-center" href="https://ipfs-book.decentralized-web.jp/"><span>IPFS入門</span>
+  </a>
+</h2>
+
+
+<div class="book-search">
+  <input type="text" id="book-search-input" placeholder="Search" aria-label="Search" maxlength="64" data-hotkeys="s/" />
+  <div class="book-search-spinner hidden"></div>
+  <ul id="book-search-results"></ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/what_is_ipfs/">Pyroとは</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/install_ipfs/">IPFSのインストール</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/adding_files/">IPFSへのファイルの追加</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/join_the_network/">コンテンツ共有</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/naming_contents/">IPNSとDNSLink</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/building_public_gateway/"class=active>パブリックゲートウェイの構築</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/faq/">FAQ</a></li>
+<li>
+  <a href="https://ipfs-book.decentralized-web.jp/ipfs-whitepaper-jp/">参考：whitepaper 日本語訳</a>
+<br/>
+<br/></li>
+</ul>
+<hr>
+
+
+
+
+
+
+  
+<ul>
+  
+  <li>
+    <a href="https://github.com/a-mitani/ipfs-primer" target="_blank" rel="noopener">
+        Github
+      </a>
+  </li>
+  
+  <li>
+    <a href="https://pyro-book.data-hacker.net/" target="_blank" rel="noopener">
+        Pyroで実践するベイズ機械学習
+      </a>
+  </li>
+  
+</ul>
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside .book-menu-content");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+      </div>
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="https://ipfs-book.decentralized-web.jp/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>パブリックゲートウェイの構築</strong>
+
+  <label for="toc-control">
+    
+    <img src="https://ipfs-book.decentralized-web.jp/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
+  </label>
+</div>
+
+
+  
+  <aside class="hidden clearfix">
+    
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#パブリックゲートウェイの構築">パブリックゲートウェイの構築</a>
+      <ul>
+        <li><a href="#リバースプロキシを利用した構築">リバースプロキシを利用した構築</a>
+          <ul>
+            <li><a href="#1-go-ipfsの自動起動設定">1. go-ipfsの自動起動設定</a></li>
+            <li><a href="#2リバースプロキシに用いるnginxのインストールと設定">2.リバースプロキシに用いるnginxのインストールと設定</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+
+  </aside>
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="パブリックゲートウェイの構築">
+  パブリックゲートウェイの構築
+  <a class="anchor" href="#%e3%83%91%e3%83%96%e3%83%aa%e3%83%83%e3%82%af%e3%82%b2%e3%83%bc%e3%83%88%e3%82%a6%e3%82%a7%e3%82%a4%e3%81%ae%e6%a7%8b%e7%af%89">#</a>
+</h1>
+<p>これまで述べきたとおりIPFSネットワークはHTTPプロトコルをベースとした既存のインターネットとは異なる独立したネットワークです。そのためIPFSのネットワークにインターネット（つまり既存のブラウザ）からアクセスするためにはIPFSネットワークへ橋渡してくれる場所を経由してアクセスする必要があります。その橋渡し役を担うのがIPFSゲートウェイであり、その中でも任意のユーザーに常時公開されているものをIPFSパブリックゲートウェイと呼びます。パブリックゲートウェイはいくつかあり、先の章で出てきた<code>https://ipfs.io/ipfs</code>や
+  <a href="https://ipfs-gateway.decentralized-web.jp/">https://ipfs-gateway.decentralized-web.jp/</a>がそれに当たります。</p>
+<p>もちろんこれらの既に公開されているゲートウェイ経由でIPFSネットワークへアクセスすることも可能ですが、あなたが技術的に興味があれば自身でゲートウェイを構築し公開することも可能です。本章ではパブリックゲートウェイ構築方法の例を示します。</p>
+<h2 id="リバースプロキシを利用した構築">
+  リバースプロキシを利用した構築
+  <a class="anchor" href="#%e3%83%aa%e3%83%90%e3%83%bc%e3%82%b9%e3%83%97%e3%83%ad%e3%82%ad%e3%82%b7%e3%82%92%e5%88%a9%e7%94%a8%e3%81%97%e3%81%9f%e6%a7%8b%e7%af%89">#</a>
+</h2>
+<p>本章末尾のNoteに記載のとおりgo-ipfsを設定変更するだけで手軽に自身のIPFSノードをパブリックゲートウェイを構築することはできます。しかしこの方法は、<code>http</code>のアクセスのみで<code>https</code>でのアクセスを許可することができないこと、セキュリティ面での懸念があること、さらにアクセスが増えた場合の負荷分散が難しいというように、多くのデメリットがあります。そのためにWebサーバ（ここではnginxを想定します）をリバースプロキシとして利用しgo-ipfsへのアクセスを中継する方法を取るのが一般的です（下図）。</p>
+<p>
+  <img src="images/ipfs_gateway.png" alt="ipfs gateway" /></p>
+<p>以下に<code>Ubuntu 16.04 LTS</code>環境での具体的な手順例を示します。（以降、go-ipfsが稼働するサーバがグローバルIPアドレスとドメインを持っておりDNS設定されている前提で進めます。）</p>
+<h3 id="1-go-ipfsの自動起動設定">
+  1. go-ipfsの自動起動設定
+  <a class="anchor" href="#1-go-ipfs%e3%81%ae%e8%87%aa%e5%8b%95%e8%b5%b7%e5%8b%95%e8%a8%ad%e5%ae%9a">#</a>
+</h3>
+<p>先にインストールしているgo-ipfsをサーバ再起動時などに自動起動する設定を行います。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo vi /lib/systemd/system/ipfs-daemon.service
+</code></pre></div><p>で下記の内容が記されたファイルを生成します。ここではコマンド<code>/usr/local/bin/ipfs daemon</code>が<code>ubuntu</code>ユーザー＆グループで実行されることを指定しています。（その他の設定の詳細については
+  <a href="http://enakai00.hatenablog.com/entry/20130917/1379374797">ここ</a>が参考になります。）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">[</span>Unit<span style="color:#f92672">]</span>
+Description<span style="color:#f92672">=</span>ipfs daemon
+
+<span style="color:#f92672">[</span>Service<span style="color:#f92672">]</span>
+ExecStart<span style="color:#f92672">=</span>/usr/local/bin/ipfs daemon
+Restart<span style="color:#f92672">=</span>always
+User<span style="color:#f92672">=</span>ubuntu
+Group<span style="color:#f92672">=</span>ubuntu
+
+<span style="color:#f92672">[</span>Install<span style="color:#f92672">]</span>
+WantedBy<span style="color:#f92672">=</span>multi-user.target
+</code></pre></div><p>用意したファイルでの自動起動を有効化し、実際にサーバ再起動時にgo-ipfsが自動起動されるかを確認します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo systemctl enable ipfs-daemon
+Created symlink from /etc/systemd/system/multi-user.target.wants/ipfs-daemon.service to /lib/systemd/system/ipfs-daemon.service.
+$ sudo shutdown -r now <span style="color:#75715e">#自動起動されるか実際にサーバ再起動し確認。</span>
+$ ps aux |grep ipfs <span style="color:#75715e">#プロセス確認</span>
+ubuntu     <span style="color:#ae81ff">639</span>     <span style="color:#ae81ff">1</span>  <span style="color:#ae81ff">4</span> 11:21 ?        00:00:05 /usr/local/bin/ipfs daemon
+ubuntu     <span style="color:#ae81ff">942</span>   <span style="color:#ae81ff">929</span>  <span style="color:#ae81ff">0</span> 11:23 pts/0    00:00:00 grep --color<span style="color:#f92672">=</span>auto ipfs
+</code></pre></div><h3 id="2リバースプロキシに用いるnginxのインストールと設定">
+  2.リバースプロキシに用いるnginxのインストールと設定
+  <a class="anchor" href="#2%e3%83%aa%e3%83%90%e3%83%bc%e3%82%b9%e3%83%97%e3%83%ad%e3%82%ad%e3%82%b7%e3%81%ab%e7%94%a8%e3%81%84%e3%82%8bnginx%e3%81%ae%e3%82%a4%e3%83%b3%e3%82%b9%e3%83%88%e3%83%bc%e3%83%ab%e3%81%a8%e8%a8%ad%e5%ae%9a">#</a>
+</h3>
+<p>webサーバはapacheなどもありmod_proxyを導入することでリバースプロキシとして利用することも可能ですが、ここではwebサーバとしてnginxを採用したいと思います。nginxをまずサーバにインストールします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo apt-get update
+$ sudo apt-get upgrade
+$ sudo apt-get install nginx
+</code></pre></div><p>下記ファイル内容のようにnginx設定を<code>vi</code>などを用いて当該ファイル内容を変更します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ cat /etc/nginx/sites-available/default
+
+<span style="color:#75715e"># http(80番ポート)アクセスをhttps(443番ポート)にリダイレクトする設定</span>
+server <span style="color:#f92672">{</span>
+    listen 80;
+    server_name ipfs-gateway.decentralized-web.jp;
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">301</span> https://$host$request_uri;
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e"># httpsへのアクセスを受けた場合の設定</span>
+server <span style="color:#f92672">{</span>
+  listen <span style="color:#ae81ff">443</span> ssl default_server;
+        index index.html index.htm index.nginx-debian.html;
+
+  <span style="color:#75715e"># SSL証明書関連の設定。</span>
+  <span style="color:#75715e"># 証明書はLet&#39;s encrypt（https://letsencrypt.org/）を利用して用意。</span>
+  <span style="color:#75715e"># 設定内のドメインは各環境に合わせること。</span>
+        server_name pfs-gateway.decentralized-web.jp;
+        ssl_certificate /etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/cert.pem;
+        ssl_certificate_key /etc/letsencrypt/live/ipfs-gateway.decentralized-web.jp/privkey.pem;
+
+  <span style="color:#75715e"># バックエンドのgo-ipfsとの連携設定。</span>
+  <span style="color:#75715e"># ドメイン以下のアクセス全て（/）を/var/www/html以下のindex.htmlへ。</span>
+        location / <span style="color:#f92672">{</span>
+        root /var/www/html;
+        <span style="color:#f92672">}</span>
+
+  <span style="color:#75715e"># ドメイン以下/ipfs/か/ipns/の場合はgo-ipfsへ。</span>
+        location ~*/ip<span style="color:#f92672">[</span>fn<span style="color:#f92672">]</span>s/.+ <span style="color:#f92672">{</span>
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection <span style="color:#e6db74">&#39;upgrade&#39;</span>;
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>上記nginxの設定ファイル内のコメントにも書いたようにHTTPS通信する際の証明書は
+  <a href="https://letsencrypt.org/">Let&rsquo;s encrypt</a>を利用して証明書を発行しています。証明書発行は自動で行われ容易にかつ手早く発行が可能です。Let&rsquo;s encryptについては
+  <a href="https://knowledge.sakura.ad.jp/5573/">ここ</a>で詳しく解説してくれているので参考にしてください<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>。</p>
+<p>最後にもう一度サーバ再起動を行いnginxとgo-ipfsが自動起動されることや所定のアドレスにブラウザからアクセスしコンテンツが表示されることを確認して完了です。</p>
+<blockquote class="book-hint danger">
+  上記の手順はFirewallの設定などセキュリティ関連の手順は割愛しています。不特定多数のアクセスを許可するサーバとしての十分なセキュリティ対策は別途必ず行うようにしてください。
+</blockquote>
+
+<blockquote class="book-hint info">
+  パブリックゲートウェイを構築する最も簡単な方法は、go-ipfsの設定ファイル[^1]内の<code>Addresses</code>項目で<code>&quot;Gateway&quot;: &quot;/ip4/127.0.0.1/tcp/8080&quot;</code>とローカルホストのみが許可されているところを、全てのIPアドレスからのアクセスを許可するように<code>&quot;Gateway&quot;: &quot;/ip4/0.0.0.0/tcp/8080&quot;</code>に変更することです。この設定状態で<code>ipfs daemon</code>コマンドを実行すれば、任意のクライアントのブラウザから、たとえばURL<code>http://[当該サーバIPアドレス]:8080/ipfs/QmT78zSuBmuS4z925WZfrqQ1qHaJ56DQaTfyMUF7F8ff5o</code>にアクセスすることが可能になります。しかし、本文中に記載のとおりセキュリティや運用の側面からこの方法はあまり推奨されません。
+</blockquote>
+
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>もちろん
+  <a href="https://letsencrypt.org/docs/">公式ドキュメント</a>も充実しています。 <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex flex-wrap justify-between">
+
+
+
+
+
+</div>
+
+
+
+  <script>(function(){function select(element){const selection=window.getSelection();const range=document.createRange();range.selectNodeContents(element);selection.removeAllRanges();selection.addRange(range);}
+document.querySelectorAll("pre code").forEach(code=>{code.addEventListener("click",function(event){select(code.parentElement);if(navigator.clipboard){navigator.clipboard.writeText(code.parentElement.textContent);}});});})();</script>
+
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+    <aside class="book-toc">
+      <div class="book-toc-content">
+        
+  
+<nav id="TableOfContents">
+  <ul>
+    <li><a href="#パブリックゲートウェイの構築">パブリックゲートウェイの構築</a>
+      <ul>
+        <li><a href="#リバースプロキシを利用した構築">リバースプロキシを利用した構築</a>
+          <ul>
+            <li><a href="#1-go-ipfsの自動起動設定">1. go-ipfsの自動起動設定</a></li>
+            <li><a href="#2リバースプロキシに用いるnginxのインストールと設定">2.リバースプロキシに用いるnginxのインストールと設定</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+
+
+ 
+      </div>
+    </aside>
+    
+  </main>
+
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
