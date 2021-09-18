@@ -1,6 +1,6 @@
 # hugo server --minify --themesDir ... --baseURL=http://0.0.0.0:1313/theme/hugo-book/
 
-baseURL = 'https://pyro-book.data-hacker.net/'
+baseURL = 'https://ipfs-book.decentralized-web.jp/'
 title = 'IPFS入門'
 theme = 'book'
 publishDir = "docs"
