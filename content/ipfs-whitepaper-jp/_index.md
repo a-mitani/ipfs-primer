@@ -1,14 +1,14 @@
 ---
-title: 【参考】whitepaper 日本語訳
-weight: 8
-pre: "<b>8. </b>"
+title: 参考：whitepaper 日本語訳
+type: docs
 ---
+
+# 参考：whitepaper 日本語訳
 本章は参考情報として Juan Benet によって書かれたIPFSの[whitepaper](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)「IPFS-Content Addressed, Versioned, P2P File System (DRAFT 3)」の日本語訳を記します。
 
-{{% notice note %}}
+{{< hint info >}}
 本翻訳は直訳を避け、原文の内容を損ねない範囲で（大幅に）意訳しています。そのため必要な場合は[原文](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)を参照ください。また、翻訳への協力（翻訳・修正）歓迎です。協力いただける場合は[GitHub](https://github.com/a-mitani/ipfs-primer)にてIssueの発行、またはPull requestをお願いいたします。
-
-{{% /notice %}}
+{{< /hint >}}
 
 ## 概要
 Inter Planetary File System(IPFS)はピアツーピア（P2P）型の分散型ファイルシステムであり、全てのデバイスを一つのファイルシステムに結合することを目的としたものです。いくつもの点でIPFSはWebと同様のもの言えますが、一方で、一つのGitリポジトリ上でオブジェクト交換を行うBitTorrentのスウォームと考えることもできます。またはコンテンツアドレス型のハイパーリンク機能をもつストレージとも考えられます。IPFSはMerkle DAGのデータ構造を持ちます。IPFS上にバージョン管理可能なファイルシステムやブロックチェーン、または永続的なWebを構築することが可能になります。IPFSは分散ハッシュテーブル技術、インセンティブが与えられたブロック交換技術、自己証明型名前空間といった要素技術を組み合わせて実現されており、単一障害点がなくピア同士がお互いの信頼を必要とせずに実現できるシステムです。
@@ -96,7 +96,7 @@ IPFSは先述したDHT、BitTorrent、Git、SFSのアイデアを融合して実
 ### 3.1 Identities
 各ノードは`NodeId`によって識別され、これはS/Kademliaで交換される公開鍵を暗号学的ハッシュ関数によりハッシュ化したものとなります[1]。各ノードは自身の公開鍵と（パスワードにより暗号化された）秘密鍵を保持します。ノードの管理者はノードを起動する度に新しいIDを発行することも可能ですが未払いのネットワーク報酬を放棄することとなるため、それが同じIDを使い続けるインセンティブとなります。
 
-```go
+```
 type NodeId Multihash
 type Multihash []byte
 // self-describing cryptographic hash digest
@@ -112,7 +112,7 @@ type Node struct {
 ```
 
 
-```go
+```
 difficulty = <integer parameter>
 n = Node{}
 do {
@@ -194,15 +194,15 @@ BitSwapのピアは多種多様なブロックの交換戦略を取りうり、�
 
 交換戦略についての探索は今後の仕事としてここでは多くは触れません。一つの実用的な戦略関数は負債比率によってスケールされたシグモイド関数でしょう。ここで、あるノードに関してそのピアとの負債比率 *r* を、
 
-$$
+{{< katex display>}}
 r = \frac{{\rm bytes＿sent}}{{\rm bytes＿recv + 1}}
-$$
+{{< /katex >}}
 
 とした時、そのノードがピアにブロックを送信する確率を
 
-$$
+{{< katex display>}}
 P(send|r) = 1 - \frac{1}{1 + exp(6 − 3r)}
-$$
+{{< /katex >}}
 
 とします。
 Figure 1 に示されるようにこの関数はそのノードの負債比率が２を超えるあたりから急速に減少するものとなっています。 (※訳者注：レンダリング不具合からか[原文](https://ipfs.io/ipfs/QmR7GSQM93Cx5eAg6a6yRzNde1FQv7uL6X1o4k7zrJa3LX/ipfs.draft3.pdf)でもここに表示しているように関数が描画されていない空のグラフになっています。訳者が[当該関数を描画したものをGithub上に置いた](https://github.com/a-mitani/data-for-blog/blob/master/broccoli/ipython_notebooks/ipfs-whitepaper-fig1.ipynb)ので興味があれば参照ください。)

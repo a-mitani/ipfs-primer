@@ -1,16 +1,15 @@
 ---
 title: IPFSのインストール
-weight: 2
-pre: "<b>2. </b>"
+type: docs
 ---
-
+# IPFSのインストール
 先の章でIPFSはP2P型のファイルシステムであることを説明しました。IPFSを利用するためにIPFSクライアントをインストールする必要があります。ここではGo言語で実装されたクライアントであるgo-ipfsを利用します。
 
-### go-ipfsのインストール
+## go-ipfsのインストール
 
 go-ipfsのインストールは非常に容易です。ここでは、`Ubuntu 18.04 LTS`環境での例を示しますが他OSでも同様です。基本的には[go-ipfsのダウンロードサイト](https://dist.ipfs.io/#go-ipfs)よりビルド済みバイナリパッケージをダウンロードして解凍したのち、実行モジュールをPATHが通っているディレクトリに配置するスクリプトを動かすだけです。下記にコマンド例を示します。
 
-```
+```bash
 $ wget https://dist.ipfs.io/go-ipfs/v0.5.0/go-ipfs_v0.5.0_linux-amd64.tar.gz    #URLは、環境やバージョンにより適宜変更してください。
 $ tar xvzf go-ipfs_v0.5.0_linux-amd64.tar.gz
 $ cd go-ipfs/
@@ -19,12 +18,12 @@ $ sudo ./install.sh
 
 ここで、下記のように`ipfs version`のコマンドを実行しバージョン情報が表示されれば問題なくインストールされています。
 
-```
+```bash
 $ ipfs version
 ipfs version 0.5.0
 ```
 
-##### ■Tips:  go-ipfsのアップデート
+#### ■Tips:  go-ipfsのアップデート
 
 新しいバージョンのgo-ipfsにアップデートをする場合も、上記のインストール手順を新しいバージョンのモジュールで行うことでアップデート可能です。ただし、go-ipfsをデーモンとして起動（後述）している場合はそれを停止してから行ってください。
 
@@ -34,7 +33,7 @@ ipfs version 0.5.0
 
 go-ipfsのインストールを終えたら、IPFSのP2Pネットワークに参加するために下記のコマンドを実行してローカルのIPFSリポジトリを初期化します。
 
-```
+```bash
 $ ipfs init
 initializing IPFS node at /home/ubuntu/.ipfs
 generating 2048-bit RSA keypair...done
@@ -48,7 +47,7 @@ to get started, enter:
 
 実行結果の最後に示された`ipfs cat ...`のコマンドをコンソール上で実行してみましょう。詳細は後述しますがipfs catはIPFSネットワーク上に保存されているファイルの内容を取得するコマンドで、ここではreadmeファイルの内容を取得しています。
 
-```
+```bash
 $ ipfs cat /ipfs/QmQPeNsJPyVWPFDVHb77w8G42Fvo15z4bG2X8D2GhfbSXc/readme
 Hello and Welcome to IPFS!
 
