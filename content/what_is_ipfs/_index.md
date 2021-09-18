@@ -3,7 +3,7 @@ title: IPFSとは何か？
 weight: 1
 pre: "<b>1. </b>"
 ---
-
+# IPFSとは何か？
 IPFS（InterPlanetary File System）は[Protocol Labs](https://protocol.ai/)により開発が進めれられているP2Pネットワーク上で動作するハイパーメディアプロトコルとその実装です。
 
 現在のインターネットで主要なプロトコルであるHTTP（Hyper Text Transfer Protocol）を補完または置換するプロトコルとして位置付けられ、コンテンツ指向型[^1]のプロトコルであるところに大きな特徴があります。
