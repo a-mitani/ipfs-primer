@@ -13,4 +13,4 @@ IPFSプロトコル仕様は現在ドラフトであり、今後変更になる�
 
 本書への追記や修正などありましたら、上記[GitHub](https://github.com/a-mitani/ipfs-primer)にてIssueの発行、またはPull requestをお願いいたします。
 
-本ドキュメントは <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> のもとで公開されています。
+本ドキュメントは <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> のもとで公開されています。 
