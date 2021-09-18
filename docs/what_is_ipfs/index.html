@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="IPFS（InterPlanetary File System）は Protocol Labsにより開発が進めれられているP2Pネットワーク上で動作するハイパーメディアプロトコルとその実装です。
+<meta name="description" content="IPFSとは何か？ #  IPFS（InterPlanetary File System）は Protocol Labsにより開発が進めれられているP2Pネットワーク上で動作するハイパーメディアプロトコルとその実装です。
 現在のインターネットで主要なプロトコルであるHTTP（Hyper Text Transfer Protocol）を補完または置換するプロトコルとして位置付けられ、コンテンツ指向型1のプロトコルであるところに大きな特徴があります。
 HTTPはロケーション指向型プロトコル #  例えば現在のインターネットで情報にアクセスする場合https://hogehoge.com/aaa/hello.htmlといったURLを指定してアクセスします。このURLの意味するところは、「hogehoge.comというホストサーバにあるaaaというディレクトリの中のhello.htmlというファイル」ということであり、つまりは取得したい情報がある「場所」（サーバの名前、ディレクトリの名前、ファイル名）を指定しているものです。このように欲しい情報が存在する「場所」を指定して情報にアクセスする方法は「ロケーション指向」と呼ばれ、HTTPはロケーション指向のプロトコルです2。
 ロケーション指向の弊害 #  このようなロケーション指向での情報へのアクセスは直感的にわかりやすいものです。しかし多くの弊害もあります。まず一つは「情報へのアクセス可能性を保つために管理者に大きな責任（負担）が生じる」というものです。例えば上記例でのhello.html内の情報へのアクセスは「hogehoge.com」のホストサーバの管理状態に依存してしまうことがわかります。hello.html内の情報に全ての人が恒常的にアクセスすることを可能にするために、サーバ管理者には、
@@ -21,9 +21,7 @@ IPFSはコンテンツ指向型プロトコル #  このような問題を根本
 負荷分散 #  コンテンツの場所を指定しないIPFSでは、同じコンテンツを複数のサーバから取得できる場合、より近いサーバから取得することになります。一つのサーバーに負荷が集中することを防ぐことが可能になります。
 耐検閲性 #  先のトルコの例に見るようにロケーション指向ネットワークでは、その情報のある場所（サーバ）へのアクセスを遮断するだけで検閲が可能でした。一方、コンテンツ指向ネットワークでは同じコンテンツは無数のサーバで保持されることが可能であり、どこかのサーバがアクセスを遮断されても、代理の他のどこかの別のサーバから同一の情報が取得可能になり、検閲を難しくします。
 耐改ざん性 #  データのハッシュ値をキーにデータにアクセスするということはデータの改ざんを不可能にします。データを取得した人はアクセスしたデータのIDであるハッシュ値と、そのコンテンツから得られるハッシュ値を比較することで容易にコンテンツの正当性を検証することができるからです。
-Filecoin #  以上のようにHTTPに比べて様々な利点があるIPFSですが、１つ問題が残っています。それはIPFSのP2Pネットワークのノードがコンテンツを保持する動機となるもの（インセンティブ）がないことです。
-HTTPの世界でビジネスを行う事業者自身が自身のビジネスのためにデータを保持してきていました。例えばFacebookはSNSサービスを充実させてユーザーを確保し収入を得るということをインセンティブに、膨大なテキストや画像さらには動画コンテンツデータを自身のサーバに保存します。しかしIPFSではP2Pネットワークがコンテンツをシェアしあいながら保存する形式を行っており、コンテンツを保持する者とそのコンテンツをもとにビジネスを行う者が必ずしも一致しません。そのためIPFSに参加しているノードにデータを保持するインセンティブが存在しないのです。
-そこで生み出されたのが Filecoinです。Filecoinは一種の仮想通貨です。FilecoinはProof-of-Spacetimeという仕組みによりIPFS上にストレージを提供した時間や量に応じて仮想通貨Filecoinが与えられることでIPFS参加ノードがコンテンツを保持するインセンティブが加わることになるのです。">
+Filecoin #  以上のようにHTTPに比べて様々な利点があるIPFSですが、１つ問題が残っています。それはIPFSのP2Pネットワークのノードがコンテンツを保持する動機となるもの（インセンティブ）がないことです。">
 <meta name="theme-color" content="#FFFFFF"><meta property="og:title" content="IPFSとは何か？" />
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
@@ -34,7 +32,7 @@ HTTPの世界でビジネスを行う事業者自身が自身のビジネスの�
 <link rel="icon" href="https://ipfs-book.decentralized-web.jp/favicon.png" type="image/x-icon">
 <link rel="stylesheet" href="https://ipfs-book.decentralized-web.jp/book.min.e62c87c0a5f78618c1d9654bac000b57fdba292e359cd3ae3a97d4774328868d.css" integrity="sha256-5iyHwKX3hhjB2WVLrAALV/26KS41nNOuOpfUd0Moho0=" crossorigin="anonymous">
   <script defer src="https://ipfs-book.decentralized-web.jp/flexsearch.min.js"></script>
-  <script defer src="https://ipfs-book.decentralized-web.jp/en.search.min.45201c41c63dfa5023ac42a9e71a561467b37d881f1a6da5f452b71b83e45f8e.js" integrity="sha256-RSAcQcY9&#43;lAjrEKp5xpWFGezfYgfGm2l9FK3G4PkX44=" crossorigin="anonymous"></script>
+  <script defer src="https://ipfs-book.decentralized-web.jp/en.search.min.bffd29691119e59c54504199f7001359cfcd18fa0ea9667482a60bb7e8d33835.js" integrity="sha256-v/0paREZ5ZxUUEGZ9wATWc/NGPoOqWZ0gqYLt&#43;jTODU=" crossorigin="anonymous"></script>
 
   <script defer src="https://ipfs-book.decentralized-web.jp/sw.min.74a8bb07f0bee86d6bb9a2750f073f14d93c7e4512f28860370cfd879e9719b4.js" integrity="sha256-dKi7B/C&#43;6G1ruaJ1Dwc/FNk8fkUS8ohgNwz9h56XGbQ=" crossorigin="anonymous"></script>
 <link rel="alternate" type="application/rss+xml" href="https://ipfs-book.decentralized-web.jp/what_is_ipfs/index.xml" title="IPFS入門" />
@@ -160,7 +158,7 @@ https://github.com/alex-shpak/hugo-book
   
 <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#ipfsとは何か">IPFSとは何か？</a>
       <ul>
         <li>
           <ul>
@@ -186,7 +184,11 @@ https://github.com/alex-shpak/hugo-book
 
       
       
-  <article class="markdown"><p>IPFS（InterPlanetary File System）は
+  <article class="markdown"><h1 id="ipfsとは何か">
+  IPFSとは何か？
+  <a class="anchor" href="#ipfs%e3%81%a8%e3%81%af%e4%bd%95%e3%81%8b">#</a>
+</h1>
+<p>IPFS（InterPlanetary File System）は
   <a href="https://protocol.ai/">Protocol Labs</a>により開発が進めれられているP2Pネットワーク上で動作するハイパーメディアプロトコルとその実装です。</p>
 <p>現在のインターネットで主要なプロトコルであるHTTP（Hyper Text Transfer Protocol）を補完または置換するプロトコルとして位置付けられ、コンテンツ指向型<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>のプロトコルであるところに大きな特徴があります。</p>
 <h3 id="httpはロケーション指向型プロトコル">
@@ -338,7 +340,7 @@ document.querySelectorAll("pre code").forEach(code=>{code.addEventListener("clic
   
 <nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#ipfsとは何か">IPFSとは何か？</a>
       <ul>
         <li>
           <ul>
