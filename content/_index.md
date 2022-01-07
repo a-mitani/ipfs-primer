@@ -4,7 +4,7 @@ type: docs
 ---
 # 本書について
 
-[IPFS入門](https://book.ipfs-users.jp/)は、[Protocol Labs](https://protocol.ai/)により開発が進めれられている分散プロトコルIPFS（InterPlanetary File System）の技術入門書です。
+[IPFS入門](https://book.ipfs-users.jp/)は、[Protocol Labs](https://protocol.ai/)により開発が進められている分散プロトコルIPFS（InterPlanetary File System）の技術入門書です。
 IPFSの利用方法とその仕組みについて解説していきます。
 
 IPFSプロトコル仕様は現在ドラフトであり、今後変更になる場合があります。その場合は本書も逐次内容を変更していきます。本ドキュメントは**2021/09/18 現在、制作中です。**

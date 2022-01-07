@@ -79,11 +79,11 @@ $ ipfs name publish QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42
 Published to QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij: /ipfs/QmZpEhNpd7MCrFrMLKHnvwXSxcjMDYwcGJgkfjg9Z7yy42
 ```
 
-では、先ほどと同様にgatewayを通じて先ほどと同一の下記のURLからアクセスしてみましょう
+では、先ほどと同様にgatewayを通じて先ほどと同一の下記のURLからアクセスしてみましょう。
 ```bash
 https://ipfs-gateway.decentralized-web.jp/ipns/QmZdddUUtujd1jqcVd8SLnjbbR9CGQwPUX55AGpWJLjCij/
 ```
 
-下図のように同一URLで更新後のコンテンツが閲覧できることが見てとれます。
+下図のように同一URLで更新後のコンテンツを閲覧できることが見てとれます。
 
 ![web_page_after](images/page_after.png)
